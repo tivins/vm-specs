@@ -29,17 +29,17 @@ The spec explicitly states: *"The suffix `?` is not accepted; the language requi
 
 ### I-1. `Self?` in enum tryFrom signature
 
-- [ ] **specs.md:1217** — `static Self? tryFrom(string value)` → `static Self|null tryFrom(string value)`
+- [x] **specs.md:1217** — `static Self? tryFrom(string value)` → `static Self|null tryFrom(string value)` *(fixed 2026-03-01)*
 
 ### I-2. `string?` in FileHandle.readLine
 
-- [ ] **stdlib.md:438** — `string? readLine() throws IOException` → `string|null readLine() throws IOException`
-- [ ] **stdlib.md:450** — `string? line;` in the FileHandle example → `string|null line;`
+- [x] **stdlib.md:438** — `string? readLine() throws IOException` → `string|null readLine() throws IOException` *(fixed 2026-03-01)*
+- [x] **stdlib.md:450** — `string? line;` in the FileHandle example → `string|null line;` *(fixed 2026-03-01)*
 
 ### I-3. `string[]?` in HttpResponse.headers
 
-- [ ] **stdlib.md:104** — `string[]` followed by `?` in the type column of `HttpResponse.headers`. Should be
-  `string[]|null` if nullable, or documented differently if the field itself is optional.
+- [x] **stdlib.md:104** — `string[]` followed by `?` in the type column of `HttpResponse.headers`. Should be
+  `string[]|null` if nullable, or documented differently if the field itself is optional. *(fixed 2026-03-01)*
 
 ---
 
@@ -47,8 +47,8 @@ The spec explicitly states: *"The suffix `?` is not accepted; the language requi
 
 ### II-1. `system.Out.writeLine` does not exist
 
-- [ ] **stdlib.md:452** — `system.Out.writeLine(line)` in the FileHandle example. `system.Out` only defines
-  `print` and `println` (stdlib.md:143-144). Should be `system.Out.println(line)`.
+- [x] **stdlib.md:452** — `system.Out.writeLine(line)` in the FileHandle example. `system.Out` only defines
+  `print` and `println` (stdlib.md:143-144). Should be `system.Out.println(line)`. *(fixed 2026-03-01)*
 
 ### II-2. `char` type referenced but never defined
 
@@ -58,10 +58,11 @@ The spec explicitly states: *"The suffix `?` is not accepted; the language requi
 
 ### II-3. `assert()` used but never defined
 
-- [ ] **specs.md:1227-1233** — `assert(status == Status.NotFound)` and similar calls in the enum example.
+- [x] **specs.md:1227-1233** — `assert(status == Status.NotFound)` and similar calls in the enum example.
   `assert` is not a keyword, not in the stdlib, and not defined anywhere. Either:
   - Add `assert` as a built-in statement/keyword, or
   - Replace the example with explicit `if` checks or remove it.
+  *(fixed 2026-03-01: replaced with explicit `if` checks.)*
 
 ---
 

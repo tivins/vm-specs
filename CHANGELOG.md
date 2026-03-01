@@ -9,6 +9,12 @@
   nonexistent references, cross-document contradictions, incorrect examples, under-specified elements,
   missing features). Designed as a living checklist to track resolution progress.
 
+### Fixed
+
+- **docs/specs.md**, **docs/stdlib.md** — Resolved syntax violations (coherence § I): replaced nullable `?` suffix with explicit `|null` union in enum `tryFrom` signature, `FileHandle.readLine` and example, and `HttpResponse.headers` type to comply with the spec rule that `?` is not accepted.
+- **docs/stdlib.md** — FileHandle example: `system.Out.writeLine(line)` → `system.Out.println(line)` (coherence § II-1).
+- **docs/specs.md** — Enum example: replaced undefined `assert()` calls with explicit `if` checks (coherence § II-3).
+
 ## 0.3.0 — 2026-03-01
 
 ### Added

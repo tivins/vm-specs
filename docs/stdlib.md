@@ -101,7 +101,7 @@ Returned by **`system.net.Http.get()`** and **`system.net.Http.post()`**. Repres
 |--------------|-------------|-------------|
 | `statusCode` | `int`       | HTTP status code (e.g. 200, 404). |
 | `body`       | `string`    | Response body (encoding is implementation-defined, e.g. UTF-8). |
-| `headers`    | `string[]`? | Optional: response headers (format implementation-defined). |
+| `headers`    | `string[]|null` | Optional: response headers (format implementation-defined). |
 
 ---
 
@@ -435,7 +435,7 @@ Represents an open file. Obtained from `system.io.File.open`. Implements resourc
 |--------|------------|-------------|
 | `close` | `void close()` | Closes the file and releases the resource. Idempotent. |
 | `read` | `int read(byte[] buffer, int offset, int length) throws IOException` | Reads up to `length` bytes into `buffer` at `offset`. Returns the number of bytes read (0 at end of file). |
-| `readLine` | `string? readLine() throws IOException` | Reads one line (up to `\n` or end of file). Returns `null` at end of file. |
+| `readLine` | `string|null readLine() throws IOException` | Reads one line (up to `\n` or end of file). Returns `null` at end of file. |
 | `write` | `void write(byte[] data, int offset, int length) throws IOException` | Writes `length` bytes from `data` starting at `offset`. |
 | `write` | `void write(string text) throws IOException` | Writes the string to the file (no trailing `\n` added). |
 | `flush` | `void flush() throws IOException` | Flushes the write buffer to the file. |
@@ -447,9 +447,9 @@ The runtime may provide a destructor that calls `close()` if the handle goes out
 ```nl
 auto handle = system.io.File.open("data.txt");
 try {
-    string? line;
+    string|null line;
     while ((line = handle.readLine()) != null) {
-        system.Out.writeLine(line);
+        system.Out.println(line);
     }
 } finally {
     handle.close();

@@ -1214,7 +1214,7 @@ system.Out.print(status.value); // 200
 
 ```nl
 static Self from(string value)
-static Self? tryFrom(string value)
+static Self|null tryFrom(string value)
 ```
 
 - **`from(value)`** : convertit la chaîne en valeur d’enum correspondante. **Lève une exception** si `value` ne correspond à aucun cas de l’enum.
@@ -1224,13 +1224,13 @@ Example:
 
 ```nl
 Status status = Status.from("NotFound");
-assert(status == Status.NotFound);
+if (status != Status.NotFound) { /* expected NotFound */ }
 
 auto maybe = Status.tryFrom("NotFound");
-assert(maybe != null && maybe == Status.NotFound);
+if (maybe == null || maybe != Status.NotFound) { /* expected non-null NotFound */ }
 
 auto invalid = Status.tryFrom("Invalid");
-assert(invalid == null);
+if (invalid != null) { /* expected null */ }
 
 // Status.from("Invalid"); // lève une exception
 ```
