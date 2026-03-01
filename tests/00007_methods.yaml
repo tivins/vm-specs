@@ -1,0 +1,34 @@
+# tests/00007_methods.yaml
+
+---
+title: "Testing static methods, const methods and const parameters"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.methods;
+
+class MethodsTest {
+	private int value;
+
+	public construct() {
+		this.value = 0;
+	}
+
+	public static void staticMethod() {
+	}
+
+	public int getValue() const {
+		return this.value;
+	}
+
+	public void withConstParam(const int arg) {
+		int x = arg;
+	}
+
+	public void run() {
+		MethodsTest.staticMethod();
+		int v = this.getValue();
+		this.withConstParam(42);
+	}
+}

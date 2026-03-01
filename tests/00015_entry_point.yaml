@@ -1,0 +1,15 @@
+# tests/00015_entry_point.yaml
+
+---
+title: "Testing entry point main signature"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.entry;
+
+class EntryTest {
+	public static int main(int argc, string[] args) {
+		return 0;
+	}
+}

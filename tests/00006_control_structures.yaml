@@ -1,0 +1,49 @@
+# tests/00006_control_structures.yaml
+
+---
+title: "Testing if/else, while, for, switch, match"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.control;
+
+class ControlTest {
+	public void run() {
+		bool cond = true;
+		if (cond) {
+			cond = false;
+		} else {
+			cond = true;
+		}
+
+		int i = 0;
+		while (i < 10) {
+			i++;
+			if (i == 5) break;
+		}
+
+		for (int j = 0; j < 5; j++) {
+			i += j;
+		}
+
+		int v = 2;
+		switch (v) {
+			case 1:
+				i = 1;
+				break;
+			case 2:
+				i = 2;
+				break;
+			default:
+				i = 0;
+				break;
+		}
+
+		string result = match (v) {
+			1: "one",
+			2: "two",
+			default: "other",
+		};
+	}
+}

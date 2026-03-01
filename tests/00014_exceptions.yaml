@@ -1,0 +1,46 @@
+# tests/00014_exceptions.yaml
+
+---
+title: "Testing try/catch/finally, throws, custom exception"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.exceptions;
+
+class readonly MyException extends Exception {
+	public int code;
+	public construct(string message, int code) {
+		super(message);
+		this.code = code;
+	}
+}
+
+class Risky {
+	public void doRisky() throws MyException {
+		throw new MyException("error", 42);
+	}
+
+	public void doGeneric() throws Exception {
+		throw new Exception("generic");
+	}
+}
+
+class ExceptionsTest {
+	public void run() {
+		Risky r = new Risky();
+		try {
+			r.doRisky();
+		} catch (MyException ex) {
+			int c = ex.code;
+		} catch (Exception ex) {
+			string m = ex.message;
+		} finally {
+		}
+
+		try {
+			r.doGeneric();
+		} catch (Exception ex) {
+		}
+	}
+}

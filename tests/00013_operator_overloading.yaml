@@ -1,0 +1,48 @@
+# tests/00013_operator_overloading.yaml
+
+---
+title: "Testing operator overloading (binary and compound assignment)"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.overload;
+
+class Vec2 {
+	public int x;
+	public int y;
+
+	public construct() {
+		this.x = 0;
+		this.y = 0;
+	}
+
+	public construct(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public type operator+(const Vec2 other) {
+		return new type(this.x + other.x, this.y + other.y);
+	}
+
+	public type operator+(const int scalar) {
+		return new type(this.x + scalar, this.y + scalar);
+	}
+
+	public self operator+=(const Vec2 other) {
+		this.x += other.x;
+		this.y += other.y;
+		return this;
+	}
+}
+
+class OverloadTest {
+	public void run() {
+		auto p1 = new Vec2(1, 2);
+		auto p2 = new Vec2(3, 4);
+		auto p3 = p1 + p2;
+		auto p4 = p3 + 1;
+		p4 += new Vec2(2, 3);
+	}
+}

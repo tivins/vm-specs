@@ -1,0 +1,37 @@
+# tests/00003_types.yaml
+
+---
+title: "Testing native types, typedef, auto, null"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.types;
+
+typedef string Name;
+typedef int Count;
+
+class TypesTest {
+	public Name firstName;
+	public Count count;
+
+	public construct() {
+		this.firstName = "Test";
+		this.count = 0;
+	}
+
+	public void run() {
+		int n = 42;
+		string s = "hello";
+		float f = 3.14;
+		bool b = true;
+		auto x = 1;
+		auto y = "world";
+		Name name = "John";
+		string alsoName = name;
+		Count c = 10;
+		int[] arr = new int[]{1, 2, 3};
+		auto arr2 = new int[]{4, 5, 6};
+		TypesTest obj = null;
+	}
+}

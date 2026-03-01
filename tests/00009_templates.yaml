@@ -1,0 +1,46 @@
+# tests/00009_templates.yaml
+
+---
+title: "Testing template class and template methods"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.templates;
+
+template <type T>
+class Vector {
+	private T x;
+	private T y;
+
+	public construct(T x, T y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public T getX() {
+		return this.x;
+	}
+
+	public type operator+(const type other) {
+		return new type(this.x + other.x, this.y + other.y);
+	}
+}
+
+class Utils {
+	template <type T>
+	public static T max(const T a, const T b) {
+		return a > b ? a : b;
+	}
+}
+
+class TemplatesTest {
+	public void run() {
+		Vector<int> v1 = new Vector<int>(1, 2);
+		Vector<float> v2 = new Vector<float>(1.0, 2.0);
+		auto v3 = v1 + v1;
+
+		int m = Utils.max(10, 20);
+		float mf = Utils.max(3.14, 2.71);
+	}
+}

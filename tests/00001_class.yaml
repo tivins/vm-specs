@@ -1,0 +1,15 @@
+# tests/00001_class.yaml
+
+---
+title: "Testing class parsing, instantiation, typing and auto"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.class;
+class ClassTest {
+	public construct() {}
+	public destruct() {}
+}
+ClassTest classTestExplicit = new ClassTest();
+auto classTestAuto = new ClassTest();

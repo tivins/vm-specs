@@ -1,0 +1,46 @@
+# tests/00010_extends_implements.yaml
+
+---
+title: "Testing extends, implements, super"
+expected_exit_code: 0
+expected_stdout: ""
+---
+
+namespace test.inheritance;
+
+interface Stringable {
+	public string toString();
+}
+
+class Base {
+	protected string value;
+
+	public construct(string value) {
+		this.value = value;
+	}
+
+	public void display() {
+	}
+}
+
+class Derived extends Base implements Stringable {
+	public construct(string value) {
+		super(value);
+	}
+
+	public void display() {
+		super.display();
+	}
+
+	public string toString() {
+		return this.value;
+	}
+}
+
+class InheritanceTest {
+	public void run() {
+		Derived d = new Derived("hello");
+		d.display();
+		string s = d.toString();
+	}
+}
