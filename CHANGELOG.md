@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 — 2026-03-01
+
+### Added
+
+- **docs/coherence.md** — Coherence tracker listing all known inconsistencies, errors, and gaps across
+  specs.md, stdlib.md, compiler.md, and vm.md. 20 items organized in 6 categories (syntax violations,
+  nonexistent references, cross-document contradictions, incorrect examples, under-specified elements,
+  missing features). Designed as a living checklist to track resolution progress.
+
 ## 0.3.0 — 2026-03-01
 
 ### Added
