@@ -14,6 +14,8 @@
 - **docs/specs.md**, **docs/stdlib.md** — Resolved syntax violations (coherence § I): replaced nullable `?` suffix with explicit `|null` union in enum `tryFrom` signature, `FileHandle.readLine` and example, and `HttpResponse.headers` type to comply with the spec rule that `?` is not accepted.
 - **docs/stdlib.md** — FileHandle example: `system.Out.writeLine(line)` → `system.Out.println(line)` (coherence § II-1).
 - **docs/specs.md** — Enum example: replaced undefined `assert()` calls with explicit `if` checks (coherence § II-3).
+- **docs/stdlib.md**, **docs/specs.md** — Naming coherence (V-5): `system.env` → `system.Env` (class); merged `system.ps` and `system.process` into namespace `system.ps` with class `system.ps.Process` (list, run, pid, getCwd, setCwd, exit), result types ProcessInfo and ProcessResult.
+- **docs/specs.md** — Enum `from()`: exception type specified as `IllegalArgumentException` (coherence § V-1).
 
 ## 0.3.0 — 2026-03-01
 

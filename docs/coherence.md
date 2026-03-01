@@ -146,9 +146,10 @@ Additionally, specs.md contradicts **itself**:
 
 ### V-1. Exception type for `enum.from()` not specified
 
-- [ ] **specs.md:1220** — Says "lève une exception" (throws an exception) but does not specify which
+- [x] **specs.md:1220** — Says "lève une exception" (throws an exception) but does not specify which
   exception class. Should be a specific `RuntimeException` subclass (e.g. `IllegalArgumentException`)
   so that user code and the VM know what to catch.
+  *(fixed 2026-03-01: specified `IllegalArgumentException`.)*
 
 ### V-2. Keywords declared but never defined
 
@@ -177,10 +178,11 @@ vm.md:989-1001 has provisional rules (reject at compile time) but the language-l
 
 ### V-5. Naming convention inconsistency — lowercase modules
 
-- [ ] **stdlib.md** — `system.env`, `system.ps`, `system.process` use lowercase names while all other
+- [x] **stdlib.md** — `system.env`, `system.ps`, `system.process` use lowercase names while all other
   stdlib entities use PascalCase (`system.Out`, `system.Int`, `system.io.File`, etc.). Decision needed:
   - If these are **namespaces** containing static functions (not classes), document this distinction.
   - If these are **classes**, rename to `system.Env`, `system.Ps`, `system.Process`.
+  *(fixed 2026-03-01: no static functions in namespaces; `system.env` → `system.Env` (class); `system.ps` and `system.process` merged into namespace `system.ps` with class `system.ps.Process` (static list, run, pid, getCwd, setCwd, exit), result types `ProcessInfo` and `ProcessResult`.)*
 
 ---
 

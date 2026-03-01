@@ -1,6 +1,6 @@
 # NL Standard Library (System API)
 
-This document describes the virtual standard library provided by the NL runtime for system interaction: standard streams (out, err, in), parsing, file system access (including glob, directories, paths), network sockets (TCP, UDP) and HTTP, threads and synchronization (Mutex, Semaphore), date/time with timezone, grep-style text search, environment variables, process listing and subprocess execution, string and regex utilities, random and UUID, encoding and base64. All types live in the **`system`**, **`system.io`**, **`system.net`**, **`system.thread`**, **`system.time`**, **`system.env`**, **`system.ps`**, **`system.process`**, and **`system.text`** namespaces and are available without explicit import in user code (built-in bindings). Return types written as **`T|null`** (or other union types like **`Type1|Type2|null`**) denote nullable or union types as defined in the language specification (see [specs.md](specs.md)#union-types-and-explicit-nullable).
+This document describes the virtual standard library provided by the NL runtime for system interaction: standard streams (out, err, in), parsing, file system access (including glob, directories, paths), network sockets (TCP, UDP) and HTTP, threads and synchronization (Mutex, Semaphore), date/time with timezone, grep-style text search, environment variables, process listing and subprocess execution, string and regex utilities, random and UUID, encoding and base64. All types live in the **`system`**, **`system.io`**, **`system.net`**, **`system.thread`**, **`system.time`**, **`system.Env`**, **`system.ps`**, and **`system.text`** namespaces and are available without explicit import in user code (built-in bindings). Return types written as **`T|null`** (or other union types like **`Type1|Type2|null`**) denote nullable or union types as defined in the language specification (see [specs.md](specs.md)#union-types-and-explicit-nullable).
 
 ---
 
@@ -20,6 +20,7 @@ This document describes the virtual standard library provided by the NL runtime 
 * [system.Uuid](#systemuuid)
 * [system.List](#systemlist)
 * [system.Map](#systemmap)
+* [system.Env](#systemenv)
 * [system.io.File](#systemiofile)
 * [system.io.File (glob)](#systemiofile-glob)
 * [system.io.FileHandle](#systemiofilehandle)
@@ -35,9 +36,7 @@ This document describes the virtual standard library provided by the NL runtime 
 * [system.thread.Semaphore](#systemthreadsemaphore)
 * [system.time.DateTime](#systemtimedatetime)
 * [system.time.TimeZone](#systemtimetimezone)
-* [system.env](#systemenv)
 * [system.ps](#systemps)
-* [system.process](#systemprocess)
 * [system.text.Regex](#systemtextregex)
 * [system.text.Encoding](#systemtextencoding)
 * [Exceptions](#exceptions)
@@ -53,9 +52,7 @@ This document describes the virtual standard library provided by the NL runtime 
 | `system.net`| Network (TcpListener, TcpStream, UdpSocket, Http) |
 | `system.thread`| Threads (Thread), synchronization (Mutex, Semaphore) |
 | `system.time`| Date, time, timezone (DateTime, TimeZone) |
-| `system.env`| Environment variables |
-| `system.ps`| Process listing |
-| `system.process`| Subprocess execution, current process (pid, exit), working directory |
+| `system.ps`| Process listing (Process.list, ProcessInfo), subprocess execution and current process (Process.run, Process.pid, Process.getCwd, Process.setCwd, Process.exit) |
 | `system.text`| Regex, Encoding (UTF-8, base64) |
 
 Classes in these namespaces are part of the language/runtime contract. User code may reference them by fully qualified name (e.g. `system.Out.print`) or after importing with `use system.Out;` (then `Out.print`).
@@ -80,7 +77,7 @@ Returned by **`system.io.Grep.search()`**. Represents one line matching a grep p
 
 ### system.ps.ProcessInfo
 
-Returned by **`system.ps.list()`**. Represents information about a process.
+Returned by **`system.ps.Process.list()`**. Represents information about a process.
 
 | Field     | Type        | Description |
 |-----------|-------------|-------------|
@@ -116,9 +113,9 @@ Returned by **`system.text.Regex.matchFirst()`**. Represents a single regex matc
 
 ---
 
-### system.process.ProcessResult
+### system.ps.ProcessResult
 
-Returned by **`system.process.run()`**. Represents the outcome of a completed subprocess.
+Returned by **`system.ps.Process.run()`**. Represents the outcome of a completed subprocess.
 
 | Field      | Type     | Description |
 |------------|----------|-------------|
@@ -740,7 +737,7 @@ auto dt = system.time.DateTime.now(tz);
 
 ---
 
-## system.env
+## system.Env
 
 Environment variables of the current process. All methods are **static**.
 
@@ -754,42 +751,29 @@ Environment variables of the current process. All methods are **static**.
 **Example**
 
 ```nl
-string|null home = system.env.get("HOME");
-system.env.set("MY_VAR", "value");
-string[] names = system.env.list();
+string|null home = system.Env.get("HOME");
+system.Env.set("MY_VAR", "value");
+string[] names = system.Env.list();
 ```
 
 ---
 
 ## system.ps
 
-Process listing (similar to the `ps` command). All methods are **static**.
+Process listing, subprocess execution, current process identity, working directory, and exit. The namespace exposes:
+
+- **system.ps.Process** — class with **static** methods for listing processes, running subprocesses, and querying/changing the current process (pid, cwd, exit).
+- **system.ps.ProcessInfo** — result type returned by `Process.list()` (one process entry).
+- **system.ps.ProcessResult** — result type returned by `Process.run()` (exit code, stdout, stderr).
+
+### system.ps.Process
+
+All methods are **static**.
 
 | Method | Signature | Description |
 |--------|------------|-------------|
-| `list` | `static ProcessInfo[] list()` | Returns information for all processes visible to the current process. |
+| `list` | `static ProcessInfo[] list()` | Returns information for all processes visible to the current process (process list). |
 | `list` | `static ProcessInfo[] list(int pid)` | Returns information for the process with the given PID, or an empty array if not found. |
-
-**ProcessInfo** (result type): has `int pid`, `string command`, `string[] args`, `string|null user` (or platform-specific fields). Exact fields are implementation-defined.
-
-**Example**
-
-```nl
-auto processes = system.ps.list();
-for (auto p : processes) {
-    system.Out.println(p.pid + " " + p.command);
-}
-auto one = system.ps.list(1234);
-```
-
----
-
-## system.process
-
-Subprocess execution, current process identity, exit, and working directory. All methods are **static** unless noted.
-
-| Method | Signature | Description |
-|--------|------------|-------------|
 | `run` | `static ProcessResult run(string[] args) throws IOException` | Starts a process with the given arguments; waits for it to finish. Returns exit code and captured stdout/stderr. |
 | `run` | `static ProcessResult run(string command) throws IOException` | Runs the command via the platform shell; waits for completion. |
 | `pid` | `static int pid()` | Returns the current process ID. |
@@ -797,17 +781,25 @@ Subprocess execution, current process identity, exit, and working directory. All
 | `getCwd` | `static string getCwd()` | Returns the current working directory path. |
 | `setCwd` | `static void setCwd(string path) throws IOException` | Changes the current working directory. |
 
-**ProcessResult** (result type): has `int exitCode`, `string stdout`, `string stderr`.
+**ProcessInfo** (result type): has `int pid`, `string command`, `string[] args`, `string|null user` (or platform-specific fields). See [Result types](#result-types) above.
+
+**ProcessResult** (result type): has `int exitCode`, `string stdout`, `string stderr`. See [Result types](#result-types) above.
 
 **Example**
 
 ```nl
-auto result = system.process.run("ls -la");
+auto processes = system.ps.Process.list();
+for (auto p : processes) {
+    system.Out.println(p.pid + " " + p.command);
+}
+auto one = system.ps.Process.list(1234);
+
+auto result = system.ps.Process.run("ls -la");
 system.Out.println(result.stdout);
-int myPid = system.process.pid();
-string cwd = system.process.getCwd();
-system.process.setCwd("/tmp");
-system.process.exit(1);
+int myPid = system.ps.Process.pid();
+string cwd = system.ps.Process.getCwd();
+system.ps.Process.setCwd("/tmp");
+system.ps.Process.exit(1);
 ```
 
 ---
@@ -869,7 +861,7 @@ Standard exceptions used by the system API. The hierarchy (Runtime vs Checked) i
 | `FileNotFoundException` | Checked | `system.io` | `system.io.File.open`, `system.io.File.readAllText` when the path does not exist or is not a file |
 | `IOException` | Checked | `system.io` | `system.io.File`, `system.io.Directory`, `system.io.Path`, `system.io.Grep`, and other I/O failures |
 | `IOException` | Checked | `system.net` | `system.net.TcpListener`, `system.net.TcpStream`, `system.net.UdpSocket`, `system.net.Http` on connection or read/write failure |
-| `IOException` | Checked | `system.process` | `system.process.run()`, `system.process.setCwd()` when the process cannot be started or the path is invalid |
+| `IOException` | Checked | `system.ps` | `system.ps.Process.run()`, `system.ps.Process.setCwd()` when the process cannot be started or the path is invalid |
 | `InterruptedException` | Checked | `system.thread` | Thrown when a thread is interrupted while blocked in `join()` or `sleep()`. |
 | `FormatException` | Checked | `system.time` | `system.time.DateTime.parse()` when the string format is invalid. |
 | `FormatException` | Checked | `system.text` | `system.text.Encoding.base64Decode()` when the string is not valid base64. |

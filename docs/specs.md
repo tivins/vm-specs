@@ -1217,7 +1217,7 @@ static Self from(string value)
 static Self|null tryFrom(string value)
 ```
 
-- **`from(value)`** : convertit la chaîne en valeur d’enum correspondante. **Lève une exception** si `value` ne correspond à aucun cas de l’enum.
+- **`from(value)`** : convertit la chaîne en valeur d’enum correspondante. Lève **`IllegalArgumentException`** (sous-classe de `RuntimeException`) si `value` ne correspond à aucun cas de l’enum.
 - **`tryFrom(value)`** : même conversion, mais retourne **`null`** au lieu de lever une exception si `value` ne correspond à aucun cas.
 
 Example:
@@ -1232,7 +1232,7 @@ if (maybe == null || maybe != Status.NotFound) { /* expected non-null NotFound *
 auto invalid = Status.tryFrom("Invalid");
 if (invalid != null) { /* expected null */ }
 
-// Status.from("Invalid"); // lève une exception
+// Status.from("Invalid"); // throws IllegalArgumentException
 ```
 
 ## Control Structures
@@ -2053,7 +2053,7 @@ This rule ensures that if a method calls `super.doSomething()`, all checked exce
 
 ## Standard library
 
-System interaction (console, parsing, file system, network, threads, time, environment, process, text utilities) is provided by the **standard library** in the namespaces `system`, `system.io`, `system.net`, `system.thread`, `system.time`, `system.env`, `system.ps`, `system.process`, and `system.text`. Types such as `system.Out`, `system.Err`, `system.In`, `system.Int`, `system.Float`, `system.String`, `system.io.File`, and `system.io.FileHandle` offer static or instance methods for I/O and parsing. A `system.io.FileHandle` (from `system.io.File.open`) supports `read`, `readLine`, `write`, and `flush` for line-by-line or binary access in addition to `close`. See **[stdlib.md](stdlib.md)** for the full API.
+System interaction (console, parsing, file system, network, threads, time, environment, process, text utilities) is provided by the **standard library** in the namespaces `system`, `system.io`, `system.net`, `system.thread`, `system.time`, `system.Env`, `system.ps`, and `system.text`. Types such as `system.Out`, `system.Err`, `system.In`, `system.Int`, `system.Float`, `system.String`, `system.io.File`, and `system.io.FileHandle` offer static or instance methods for I/O and parsing. A `system.io.FileHandle` (from `system.io.File.open`) supports `read`, `readLine`, `write`, and `flush` for line-by-line or binary access in addition to `close`. See **[stdlib.md](stdlib.md)** for the full API.
 
 ## Entry point
 

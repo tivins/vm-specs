@@ -19,7 +19,7 @@ Read **specs.md** first for the language; then **compiler.md** for compile-time 
 ## Project structure
 
 ```
-vvm/
+nlvm/
 ├── docs/
 │   ├── specs.md      # Language specification
 │   ├── compiler.md   # Compiler checks and error codes
