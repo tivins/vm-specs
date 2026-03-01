@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.2 — 2026-03-01
+
+### Added
+
+- **docs/milestones.md** — Implementation roadmap: 8 milestones covering lexer/parser, semantic
+  analysis, bytecode emission, VM core, objects/arrays/dispatch, exceptions/closures, standard
+  library, and test runner integration. Each milestone lists scope, spec references, and testable
+  deliverables. Includes a dependency graph. README updated to reference the new document.
+
 ## 0.3.1 — 2026-03-01
 
 ### Added
