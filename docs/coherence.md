@@ -52,9 +52,10 @@ The spec explicitly states: *"The suffix `?` is not accepted; the language requi
 
 ### II-2. `char` type referenced but never defined
 
-- [ ] **specs.md:729** — "Scalar types (`int`, `float`, `bool`, `char`, `byte`, etc.)" in the
+- [x] **specs.md:729** — "Scalar types (`int`, `float`, `bool`, `char`, `byte`, etc.)" in the
   Parameter passing semantics section. `char` is not listed in native types (specs.md:199) and has no
   definition anywhere. Remove `char` from the list or define it as a native type.
+  *(fixed 2026-03-02: removed `char` from scalar list; documented that character = string length 1; added Planned section for future `char` type.)*
 
 ### II-3. `assert()` used but never defined
 
@@ -94,8 +95,9 @@ Additionally, specs.md contradicts **itself**:
 - Line 2038-2041 marks `throws IOException` as Error ("Missing Exception"). But by the same logic,
   `IOException` is a subclass of `Exception` and should be valid.
 
-- [ ] **Resolution needed:** adopt the compiler.md rule (Liskov-compatible, matches Java) and rewrite the
-  specs.md section + examples to match. Update compiler.md error E016/E017 descriptions if needed.
+- [x] **Resolved (2026-03-02):** adopted the compiler.md rule (Liskov-compatible, matches Java). Rewrote
+  specs.md § Exception inheritance rules and examples to match. E016/E017 descriptions in compiler.md
+  were already correct.
 
 ### III-2. Array built-in methods summary incomplete in stdlib.md
 

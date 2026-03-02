@@ -66,6 +66,7 @@ write concise code without sacrificing type safety or runtime guarantees.
     * [Exception inheritance rules](#exception-inheritance-rules)
 * [Standard library](stdlib.md)
 * [Entry point](#entry-point)
+* [Planned](#planned)
 
 ## Lexical Elements
 
@@ -199,6 +200,8 @@ my var // Error : Contains ' '
 * `string`, `int`, `float`, `bool` (`true`, `false`), `byte`, `null`
 * `void` - special type for methods that do not return a value
 * Arrays uses `[]`: `string[]`, `int[]`, `byte[]`, `customObject[]`
+
+A **character** is represented as a `string` of length 1 (e.g. via `system.String.charAt`). A dedicated `char` type may be added to the spec in a future version; see [Planned](#planned).
 
 See [Arrays](#arrays) for creation, access, and built-in methods.
 
@@ -726,7 +729,7 @@ class MyClass
 
 Parameters are passed by **value** or by **reference-value** by default, depending on the type:
 
-- **Scalar types** (`int`, `float`, `bool`, `char`, `byte`, etc.): passed **by value**. The method receives a copy; assignments to the parameter do not affect the caller's variable.
+- **Scalar types** (`int`, `float`, `bool`, `byte`, etc.): passed **by value**. The method receives a copy; assignments to the parameter do not affect the caller's variable.
 - **Object types** (class instances): passed **by reference-value**. The method receives a copy of the reference; it can mutate the object's state, but reassigning the parameter (e.g. `param = new MyClass()`) does not change the caller's variable.
 
 To allow a method to modify the **caller's variable** (e.g. for a `swap`), use the **`ref`** modifier. The parameter becomes a true reference to the caller's variable. The caller must also use `ref` at the call site, making the intent explicit.
@@ -2014,7 +2017,12 @@ catch (FileNotFoundException ex) {
 
 ### Exception inheritance rules
 
-When overriding a method, the overriding method must declare at least the same checked exceptions (or their subclasses). It cannot declare fewer checked exceptions than the base method. Runtime exceptions are not considered in this rule:
+When overriding a method, the overriding method's `throws` clause must **cover** every checked exception declared by the parent (Liskov substitution principle):
+
+- For each exception type `E` in the parent's `throws` clause, the child's `throws` clause must include `E` or a subclass of `E`.
+- The child may not introduce new checked exception types that are not subtypes of exceptions declared by the parent.
+
+Runtime exceptions are not considered in this rule.
 
 ```nl
 class Base {
@@ -2029,15 +2037,20 @@ class Derived extends Base {
         super.doSomething();
     }
     
+    // OK: IOException is a subclass of Exception — covers both parent exceptions
+    public void doSomething() throws IOException {
+        super.doSomething();
+    }
+    
     // OK: subclasses (more specific)
     public void doSomething() throws FileNotFoundException, IOException {
         // FileNotFoundException extends IOException
         super.doSomething();
     }
     
-    // Error: fewer exceptions
-    // public void doSomething() throws IOException {
-    //     // Missing Exception - but parent can throw it!
+    // Error (E016): child does not cover IOException — Exception is not a subclass of IOException
+    // public void doSomething() throws Exception {
+    //     super.doSomething();
     // }
     
     // OK: can throw runtime exceptions without declaring them
@@ -2047,9 +2060,24 @@ class Derived extends Base {
         super.doSomething();
     }
 }
+
+// E017: introducing an exception not in the parent's hierarchy
+class BaseNarrow {
+    public void doSomething() throws IOException { /* ... */ }
+}
+class DerivedNarrow extends BaseNarrow {
+    // OK: same as parent
+    public void doSomething() throws IOException {
+        super.doSomething();
+    }
+    // Error (E017): SomeOtherException is not a subtype of IOException
+    // public void doSomething() throws IOException, SomeOtherException {
+    //     super.doSomething();
+    // }
+}
 ```
 
-This rule ensures that if a method calls `super.doSomething()`, all checked exceptions that the parent method can throw are still declared in the child method. Runtime exceptions do not need to be declared in overridden methods.
+This rule ensures substitutability: callers that handle the parent's declared exceptions can safely call the overriding method, since the child only throws the same or more specific exceptions. Runtime exceptions do not need to be declared in overridden methods.
 
 ## Standard library
 
@@ -2123,6 +2151,12 @@ class Calculator {
 ```
 
 When executed, the return value of the `main` method becomes the program's exit code, which can be used by shell scripts, build systems, and other programs to determine the execution status.
+
+## Planned
+
+The following features may be added to the spec in future versions:
+
+- **`char` type** — A dedicated scalar type for a single character (e.g. Unicode codepoint). Currently, a character is represented as a `string` of length 1.
 
 
 [1]: #conditionals

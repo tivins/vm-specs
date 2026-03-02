@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.4 — 2026-03-02
+
+### Fixed
+
+- **docs/specs.md** — Exception inheritance rules: adopted Liskov-compatible rule from compiler.md (coherence § III-1). Child may declare `E` or a subclass of `E` for each parent exception; `throws IOException` alone is valid when parent has `throws Exception, IOException`. Updated examples for E016/E017.
+- **docs/specs.md** — Removed undefined `char` from scalar types list in Parameter passing semantics (coherence § II-2). Documented that a character is represented as a `string` of length 1.
+
+### Added
+
+- **docs/specs.md** — § Planned: section for future spec features; `char` type listed as potentially added later.
+
 ## 0.3.3 — 2026-03-01
 
 ### Added
