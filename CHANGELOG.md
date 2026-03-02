@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.8.3 — 2026-03-03
+
+### Fixed
+
+- **docs/specs.md** — § Template class: duplicate variable `v1` → `v2` in usage example (coherence III-3).
+- **docs/specs.md** — § Fluent methods: added missing `return this;` in `save()` method (coherence III-8).
+- **docs/specs.md** — § Enums: "tailing coma" → "trailing comma" (coherence VII-3).
+- **docs/specs.md** — § Nullish coalescing: examples used non-nullable `MyObject` with `null` assignment (E003); changed to `string|null` for type consistency (coherence III-4, III-5).
+- **docs/specs.md** — § Elvis operator: example used non-nullable `MyObject` with `null` assignment (E003); changed to `string|null` (coherence III-6).
+- **docs/specs.md** — § Exception class hierarchy: `IllegalArgumentException` comment now mentions `enum.from()` in addition to `TimeZone.get` (coherence I-6).
+- **docs/stdlib.md** — Introductory text: removed `system.Env` from the namespace list (it is a class in `system`, not a namespace) (coherence I-4).
+- **docs/stdlib.md** — Namespace table: added `Env` and core interfaces to `system` namespace description.
+- **docs/stdlib.md** — § system.Out: `print`/`println` overloads for `int`, `float`, `bool` changed from "may" to **"must"** be provided (coherence I-7).
+- **docs/stdlib.md** — § system.String example: `length()` result 15 → **16** (coherence III-1); `substring(2, 8)` result `"Hello"` → **`"Hello,"`** (coherence III-2).
+- **docs/stdlib.md** — § system.io.Path example: removed extraneous space in array initializer `new string[] {…}` → `new string[]{…}` (coherence III-11).
+- **docs/stdlib.md** — Exceptions table: `IllegalArgumentException` namespace changed from `system.time` to **`system`**; now lists `enum.from()` as a throw site (coherence I-6).
+- **docs/milestones.md** — Milestone 2 summary: error code count 31 → **38** (coherence I-1).
+- **docs/milestones.md** — Milestone 2 scope: corrected error-code groupings — ref rules E020–E022, named/optional E023–E026, entry point E027–E029; added missing categories (inheritance modifiers E032–E036, reserved keywords E030, arrays E031/E038) (coherence I-2).
+- **docs/milestones.md** — Milestone 7: `toUpper`/`toLower` → **`toUpperCase`**/**`toLowerCase`** (coherence VII-5).
+- **archives/coherence_closed_20260303.md** — Wrong year: 2025 → **2026** (coherence VII-1).
+- **README.md** — Project structure: `nlvm/` → **`nlvm-specs/`** (coherence VII-2).
+
+### Added
+
+- **docs/specs.md** — § Switch/Match: documented **fall-through** semantics (without `break`, execution continues into the next case body), previously defined only in vm.md (coherence I-8).
+- **docs/stdlib.md** — § Core interfaces (built-in): new section cross-referencing **Stringable**, **Cloneable**, and **ValueEquatable** interfaces from specs.md (coherence V-7).
+- **docs/coherence.md** — 19 items resolved (I-1, I-2, I-4, I-6, I-7, I-8, III-1–III-6, III-8, III-11, V-7, VII-1–VII-6).
+
 ## 0.8.2 — 2026-03-03
 
 ### Added

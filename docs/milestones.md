@@ -11,7 +11,7 @@ This document describes the recommended phases for building a complete NL toolch
 | # | Milestone | Deliverable | Key references |
 |---|-----------|-------------|----------------|
 | 1 | [Lexer & Parser](#milestone-1--lexer--parser) | AST for all NL syntax | specs.md |
-| 2 | [Semantic analysis](#milestone-2--semantic-analysis) | Error diagnostics (31 codes, 1 warning) | compiler.md, specs.md |
+| 2 | [Semantic analysis](#milestone-2--semantic-analysis) | Error diagnostics (38 error codes, 1 warning) | compiler.md, specs.md |
 | 3 | [Bytecode emission](#milestone-3--bytecode-emission) | Valid `.nlm` modules | vm.md §§ Module format, Compilation strategies; compiler.md § [Compiler invocation (nlc)](compiler.md#compiler-invocation-nlc) |
 | 4 | [VM core](#milestone-4--vm-core) | Execute primitive programs | vm.md §§ Architecture, Value representation, Instruction set, Program startup, [VM invocation (nlvm)](vm.md#vm-invocation-nlvm) |
 | 5 | [Objects, arrays & dispatch](#milestone-5--objects-arrays--dispatch) | OOP programs run | vm.md §§ Object model, Method dispatch |
@@ -66,8 +66,11 @@ Implement all compile-time checks defined in compiler.md. This milestone require
 - **Immutability enforcement** — [compiler.md § Immutability](compiler.md#immutability-enforcement): `const` methods (E010, E011), `const` parameters (E012), `readonly` (E013, E014).
 - **Exception checking** — [compiler.md § Exception checking](compiler.md#exception-checking): checked propagation (E015), inheritance rules (E016, E017).
 - **Visibility enforcement** — [compiler.md § Visibility](compiler.md#visibility-enforcement): E018, E019.
-- **Parameter validation** — [compiler.md § Parameter validation](compiler.md#parameter-validation): `ref` rules (E020–E024), named/optional rules (E025–E028).
-- **Entry point validation** — [compiler.md § Entry point](compiler.md#entry-point-validation): E029, E030, E031, E038.
+- **Parameter validation** — [compiler.md § Parameter validation](compiler.md#parameter-validation): `ref` rules (E020–E022), named/optional rules (E023–E026).
+- **Entry point validation** — [compiler.md § Entry point](compiler.md#entry-point-validation): E027–E029.
+- **Inheritance modifiers** — [compiler.md § Inheritance modifiers](compiler.md#inheritance-modifiers-abstract-final): abstract (E032–E034), final (E035, E036).
+- **Reserved keywords** — [compiler.md § Reserved keywords](compiler.md#reserved-keywords): E030.
+- **Default values and arrays** — [compiler.md § Default values](compiler.md#default-values): E031, E038.
 - **Warnings:** `nodiscard` — [compiler.md § Nodiscard](compiler.md#nodiscard): W001.
 
 ### Testable at this stage
@@ -198,7 +201,7 @@ Implement native bindings for all `system.*` classes.
 ### Scope
 
 - **Native module binding** — [vm.md § Standard library binding](vm.md#standard-library-binding): the VM intercepts `INVOKE_STATIC`/`INVOKE_INSTANCE` on `system.*` classes.
-- **String instance methods** — [stdlib.md § system.String](stdlib.md#systemstring): `length`, `charAt`, `substring`, `indexOf`, `contains`, `replace`, `split`, `trim`, `toUpper`, `toLower`, `startsWith`, `endsWith`.
+- **String instance methods** — [stdlib.md § system.String](stdlib.md#systemstring): `length`, `charAt`, `substring`, `indexOf`, `contains`, `replace`, `split`, `trim`, `toUpperCase`, `toLowerCase`, `startsWith`, `endsWith`.
 - **Array built-in methods** — [specs.md § Arrays](specs.md#arrays) / [vm.md § Standard library binding](vm.md#standard-library-binding): `slice`, `map`, `filter`, `forEach`, `sort`, `find` (native, use `INVOKE_CLOSURE` for callbacks).
 - **I/O:** `system.Out`, `system.Err`, `system.In` — [stdlib.md § system.Out](stdlib.md#systemout-stdout), [§ system.Err](stdlib.md#systemerr-stderr), [§ system.In](stdlib.md#systemin-stdin).
 - **Parsing:** `system.Int`, `system.Float`, `system.Bool` — [stdlib.md § system.Int](stdlib.md#systemint), [§ system.Float](stdlib.md#systemfloat), [§ system.Bool](stdlib.md#systembool).

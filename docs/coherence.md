@@ -12,13 +12,13 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| [I. Cross-document inconsistencies](#i-cross-document-inconsistencies) | 8 | Contradictions between documents |
+| [I. Cross-document inconsistencies](#i-cross-document-inconsistencies) | 8 (5 resolved) | Contradictions between documents |
 | [II. Language specification omissions](#ii-language-specification-omissions) | 17 | Features referenced or implied but never formally defined in specs.md |
-| [III. Incorrect examples](#iii-incorrect-examples) | 11 | Code that would not compile, produces wrong results, or contradicts the spec |
+| [III. Incorrect examples](#iii-incorrect-examples) | 11 (7 resolved) | Code that would not compile, produces wrong results, or contradicts the spec |
 | [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 7 | Missing pieces in vm.md or compiler.md |
-| [V. Standard library issues](#v-standard-library-issues) | 8 | stdlib.md problems (inconsistencies, missing API) |
+| [V. Standard library issues](#v-standard-library-issues) | 8 (1 resolved) | stdlib.md problems (inconsistencies, missing API) |
 | [VI. Under-specified semantics](#vi-under-specified-semantics) | 9 | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
-| [VII. Documentation and editorial errors](#vii-documentation-and-editorial-errors) | 6 | Typos, wrong numbers, stale cross-references |
+| [VII. Documentation and editorial errors](#vii-documentation-and-editorial-errors) | 6 (6 resolved) | Typos, wrong numbers, stale cross-references |
 
 ---
 
@@ -26,11 +26,11 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 
 ### I-1. milestones.md — error code count out of date
 
-- [ ] **milestones.md line 14** — Milestone 2 summary says *"31 codes, 1 warning"*. The actual count is **38 error codes** (E001–E038) and 1 warning (W001), consistent with README and compiler.md. The summary table is stale.
+- [x] **milestones.md line 14** — Milestone 2 summary says *"31 codes, 1 warning"*. The actual count is **38 error codes** (E001–E038) and 1 warning (W001), consistent with README and compiler.md. The summary table is stale. *(fixed 0.8.3)*
 
 ### I-2. milestones.md — Milestone 2 error-code groupings are wrong
 
-- [ ] **milestones.md lines 63–71** — The error codes are assigned to the wrong categories:
+- [x] **milestones.md lines 63–71** — The error codes are assigned to the wrong categories: *(fixed 0.8.3)*
 
 | Category (milestones.md) | Codes listed | Correct codes (compiler.md) |
 |---|---|---|
@@ -50,7 +50,7 @@ If `const` is mandatory, the stdlib examples are wrong. If optional, specs.md sh
 
 ### I-4. `system.Env` listed as a namespace
 
-- [ ] **stdlib.md line 3** lists `system.Env` as a **namespace**: *"All types live in the `system`, `system.io`, `system.net`, `system.thread`, `system.time`, **`system.Env`**, `system.ps`, and `system.text` namespaces…"*. But `system.Env` is a **class** (with static methods) inside the `system` namespace. It should be removed from the namespace list.
+- [x] **stdlib.md line 3** lists `system.Env` as a **namespace**: *"All types live in the `system`, `system.io`, `system.net`, `system.thread`, `system.time`, **`system.Env`**, `system.ps`, and `system.text` namespaces…"*. But `system.Env` is a **class** (with static methods) inside the `system` namespace. It should be removed from the namespace list. *(fixed 0.8.3)*
 
 ### I-5. `throws` declared for runtime exceptions in stdlib
 
@@ -60,15 +60,15 @@ If `const` is mandatory, the stdlib examples are wrong. If optional, specs.md sh
 
 ### I-6. `IllegalArgumentException` namespace attribution
 
-- [ ] **stdlib.md exceptions table (line 897)** lists `IllegalArgumentException` under namespace `system.time` because it is thrown by `TimeZone.get()`. But `IllegalArgumentException` is also thrown by `enum.from()` (specs.md § Enums methods), which is a core language feature — not in `system.time`. The exception belongs in the `system` namespace (alongside `IndexOutOfBoundsException`, `NumberFormatException`, etc.). The table should be corrected.
+- [x] **stdlib.md exceptions table (line 897)** lists `IllegalArgumentException` under namespace `system.time` because it is thrown by `TimeZone.get()`. But `IllegalArgumentException` is also thrown by `enum.from()` (specs.md § Enums methods), which is a core language feature — not in `system.time`. The exception belongs in the `system` namespace (alongside `IndexOutOfBoundsException`, `NumberFormatException`, etc.). The table should be corrected. *(fixed 0.8.3)*
 
 ### I-7. `system.Out.print` — "may" provide overloads, but examples require them
 
-- [ ] **stdlib.md line 154** says *"Overloads of `print` and `println` for other types (e.g. `int`, `float`, `bool`) **may** be provided by the runtime."* But **specs.md** examples call `system.Out.print(counter)` (line 1552, `counter` is `int`), `system.Out.print(obj.value)` (line 1018, `int`), etc. These would be compile errors without overloads (cannot pass `int` to a `string` parameter). The "may" must be changed to **"must"**, or the examples must use explicit `(string)` casts / concatenation.
+- [x] **stdlib.md line 154** says *"Overloads of `print` and `println` for other types (e.g. `int`, `float`, `bool`) **may** be provided by the runtime."* But **specs.md** examples call `system.Out.print(counter)` (line 1552, `counter` is `int`), `system.Out.print(obj.value)` (line 1018, `int`), etc. These would be compile errors without overloads (cannot pass `int` to a `string` parameter). The "may" must be changed to **"must"**, or the examples must use explicit `(string)` casts / concatenation. *(fixed 0.8.3: "may" → "must")*
 
 ### I-8. `switch` fall-through — defined in vm.md only
 
-- [ ] **vm.md § Switch statements** states: *"Without `break`, execution falls through to the next case body."* But **specs.md** never defines fall-through semantics for `switch`. The language-level behavior should be defined in specs.md (the language spec), not only in the compilation strategy.
+- [x] **vm.md § Switch statements** states: *"Without `break`, execution falls through to the next case body."* But **specs.md** never defines fall-through semantics for `switch`. The language-level behavior should be defined in specs.md (the language spec), not only in the compilation strategy. *(fixed 0.8.3: added fall-through semantics in specs.md § Switch/Match)*
 
 ---
 
@@ -148,47 +148,47 @@ If `const` is mandatory, the stdlib examples are wrong. If optional, specs.md sh
 
 ### III-1. system.String example — wrong `length()` result
 
-- [ ] **stdlib.md line 288** — `int n = text.length(); // 15`. The string `"  Hello, World  "` has **16** characters (2 spaces + `Hello, World` + 2 spaces), not 15.
+- [x] **stdlib.md line 288** — `int n = text.length(); // 15`. The string `"  Hello, World  "` has **16** characters (2 spaces + `Hello, World` + 2 spaces), not 15. *(fixed 0.8.3)*
 
 ### III-2. system.String example — wrong `substring()` result
 
-- [ ] **stdlib.md line 294** — `string sub = text.substring(2, 8); // "Hello"`. With 0-based indexing, `substring(2, 8)` returns characters at indices 2–7 = `"Hello,"` (6 characters, including the comma), not `"Hello"` (5 characters).
+- [x] **stdlib.md line 294** — `string sub = text.substring(2, 8); // "Hello"`. With 0-based indexing, `substring(2, 8)` returns characters at indices 2–7 = `"Hello,"` (6 characters, including the comma), not `"Hello"` (5 characters). *(fixed 0.8.3)*
 
 ### III-3. Template class example — duplicate variable name
 
-- [ ] **specs.md lines 1144–1145:**
+- [x] **specs.md lines 1144–1145:**
   ```
   Vector<int> v1 = new Vector<int>(1, 2, 3);
   Vector<float> v1 = new Vector<float>(.1, .2, .3);
   ```
-  Both variables are named `v1`. The second should be `v2`.
+  Both variables are named `v1`. The second should be `v2`. *(fixed 0.8.3)*
 
 ### III-4. Nullish coalescing example — non-nullable assigned null
 
-- [ ] **specs.md lines 1857–1858:**
+- [x] **specs.md lines 1857–1858:**
   ```
   MyObject a = null;
   system.Out.print(a ?? "is null");
   ```
-  `MyObject` without `|null` is non-nullable. Assigning `null` to it is compile error **E003**. Should be `MyObject|null a = null;`.
+  `MyObject` without `|null` is non-nullable. Assigning `null` to it is compile error **E003**. Should be `MyObject|null a = null;`. *(fixed 0.8.3: changed to `string|null` for type consistency)*
 
 ### III-5. Nullish coalescing example — non-nullable with `??`
 
-- [ ] **specs.md lines 1861–1862:**
+- [x] **specs.md lines 1861–1862:**
   ```
   MyObject b = getObject();
   system.Out.print(b ?? "default");
   ```
-  If `b` is `MyObject` (non-nullable), it can never be `null`, so `??` is vacuous. The type should be `MyObject|null`.
+  If `b` is `MyObject` (non-nullable), it can never be `null`, so `??` is vacuous. The type should be `MyObject|null`. *(fixed 0.8.3: changed to `string|null` for type consistency)*
 
 ### III-6. Elvis operator examples — non-nullable and type mismatch
 
-- [ ] **specs.md line 1886–1887:**
+- [x] **specs.md line 1886–1887:**
   ```
   MyObject obj = null;
   string name = obj ?: "default";
   ```
-  Same E003 issue (`MyObject obj = null`). Additionally, the result type of `obj ?: "default"` is unclear when `obj` is `MyObject` and the default is `string` — these are unrelated types.
+  Same E003 issue (`MyObject obj = null`). Additionally, the result type of `obj ?: "default"` is unclear when `obj` is `MyObject` and the default is `string` — these are unrelated types. *(fixed 0.8.3: changed to `string|null` for type consistency)*
 
 ### III-7. Elvis operator examples — type incompatibility
 
@@ -204,13 +204,13 @@ If `const` is mandatory, the stdlib examples are wrong. If optional, specs.md sh
 
 ### III-8. Fluent method `save()` — missing return statement
 
-- [ ] **specs.md lines 981–984:**
+- [x] **specs.md lines 981–984:**
   ```
   public Self save() {
       // save in database, or whatever.
   }
   ```
-  The method declares return type `Self` but has no `return this;` statement. While clearly a placeholder, it looks like valid code that would fail compilation (missing return value).
+  The method declares return type `Self` but has no `return this;` statement. While clearly a placeholder, it looks like valid code that would fail compilation (missing return value). *(fixed 0.8.3: added `return this;`)*
 
 ### III-9. Grep example — missing `const` in for-each
 
@@ -222,11 +222,11 @@ If `const` is mandatory, the stdlib examples are wrong. If optional, specs.md sh
 
 ### III-11. `system.io.Path.join` example — wrong array syntax
 
-- [ ] **stdlib.md line 531:**
+- [x] **stdlib.md line 531:**
   ```
   string path = system.io.Path.join(new string[] {"src", "com", "example", "App.nl"});
   ```
-  Per specs.md § Arrays, array initializer syntax is `new T[]{ ... }` (no space between `[]` and `{`). The example uses `new string[] {"src", ...}` with a space. This is ambiguous — either the syntax allows a space (not specified) or the example is wrong.
+  Per specs.md § Arrays, array initializer syntax is `new T[]{ ... }` (no space between `[]` and `{`). The example uses `new string[] {"src", ...}` with a space. This is ambiguous — either the syntax allows a space (not specified) or the example is wrong. *(fixed 0.8.3: removed space)*
 
 ---
 
@@ -294,7 +294,7 @@ If `const` is mandatory, the stdlib examples are wrong. If optional, specs.md sh
 
 ### V-7. `Stringable`, `Cloneable`, `ValueEquatable` not listed in stdlib
 
-- [ ] These three core interfaces are defined in **specs.md** (§ Extends/Implements, § Cloneable interface, § ValueEquatable interface) but never mentioned in **stdlib.md**. They are part of the language/runtime contract and should appear in stdlib.md (or at least be cross-referenced) since implementors need to know they are built-in.
+- [x] These three core interfaces are defined in **specs.md** (§ Extends/Implements, § Cloneable interface, § ValueEquatable interface) but never mentioned in **stdlib.md**. They are part of the language/runtime contract and should appear in stdlib.md (or at least be cross-referenced) since implementors need to know they are built-in. *(fixed 0.8.3: added § Core interfaces (built-in) in stdlib.md with cross-references)*
 
 ### V-8. No `StackOverflowException` in exception hierarchy
 
@@ -346,27 +346,27 @@ If `const` is mandatory, the stdlib examples are wrong. If optional, specs.md sh
 
 ### VII-1. Archived coherence document — wrong year
 
-- [ ] **archives/coherence_closed_20260303.md line 10** says *"All items resolved as of **2025**-03-03."* Should be **2026**-03-03.
+- [x] **archives/coherence_closed_20260303.md line 10** says *"All items resolved as of **2025**-03-03."* Should be **2026**-03-03. *(fixed 0.8.3)*
 
 ### VII-2. README project structure — folder name
 
-- [ ] **README.md line 25** shows the project root as `nlvm/`. The actual repository is named `nlvm-specs`. This is cosmetic but potentially confusing.
+- [x] **README.md line 25** shows the project root as `nlvm/`. The actual repository is named `nlvm-specs`. This is cosmetic but potentially confusing. *(fixed 0.8.3)*
 
 ### VII-3. specs.md line 1404 — "tailing" → "trailing"
 
-- [ ] *"final tailing coma is valid"* — should be **"trailing comma"**.
+- [x] *"final tailing coma is valid"* — should be **"trailing comma"**. *(fixed 0.8.3)*
 
 ### VII-4. specs.md line 1197 — ternary in `max` with unchecked comparisons
 
-- [ ] `return a > b ? a : b;` — the ternary is used on template type `T`. The `>` operator may not be defined for `T` if no bound is specified. The compiler would catch this (E006 at instantiation), but the example is misleading since it appears in a section about template methods with no bound. A comment or bounded example would be clearer.
+- [x] `return a > b ? a : b;` — the ternary is used on template type `T`. The `>` operator may not be defined for `T` if no bound is specified. The compiler would catch this (E006 at instantiation), but the example is misleading since it appears in a section about template methods with no bound. A comment or bounded example would be clearer. *(accepted 0.8.3: this is by design — unbounded templates are checked at instantiation per § Template instantiation; the example demonstrates this pattern intentionally)*
 
 ### VII-5. milestones.md § Milestone 7 — `toUpper`/`toLower` vs `toUpperCase`/`toLowerCase`
 
-- [ ] **milestones.md line 201** lists *"`toUpper`, `toLower`"*. The actual method names in stdlib.md are **`toUpperCase`** and **`toLowerCase`**. The milestone reference is wrong.
+- [x] **milestones.md line 201** lists *"`toUpper`, `toLower`"*. The actual method names in stdlib.md are **`toUpperCase`** and **`toLowerCase`**. The milestone reference is wrong. *(fixed 0.8.3)*
 
 ### VII-6. specs.md — no link reference for `[23]` (`ref`)
 
-- [ ] Keywords table uses `[23]` for `ref` → `#parameter-passing-semantics`. The anchor link works but the numerical reference style is inconsistent with the labels used elsewhere. (Minor — formatting only.)
+- [x] Keywords table uses `[23]` for `ref` → `#parameter-passing-semantics`. The anchor link works but the numerical reference style is inconsistent with the labels used elsewhere. (Minor — formatting only.) *(accepted 0.8.3: all keyword links use numbered references consistently; this is the intended style)*
 
 ---
 

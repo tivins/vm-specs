@@ -7,7 +7,7 @@ resolution. When an item is fixed, check the box and note the date or version.
 Sources: analysis from `docs_internal/coherence_2.md` and `docs_internal/documentation_of_virtual_machine.md`,
 plus a full re-audit of `docs/` performed on 2026-03-01.
 
-**All items resolved as of 2025-03-03.**
+**All items resolved as of 2026-03-03.**
 
 ---
 

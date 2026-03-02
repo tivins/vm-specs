@@ -22,7 +22,7 @@ Read **specs.md** first for the language; then **compiler.md** for compile-time 
 ## Project structure
 
 ```
-nlvm/
+nlvm-specs/
 ├── archives/         # Archived documents (e.g. coherence_closed_20260303.md)
 ├── docs/
 │   ├── specs.md      # Language specification

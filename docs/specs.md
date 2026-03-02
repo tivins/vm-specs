@@ -980,6 +980,7 @@ class Book {
     }
     public Self save() {
         // save in database, or whatever.
+        return this;
     }
 }
 ```
@@ -1142,7 +1143,7 @@ Usage:
 
 ```nl
 Vector<int> v1 = new Vector<int>(1, 2, 3);
-Vector<float> v1 = new Vector<float>(.1, .2, .3);
+Vector<float> v2 = new Vector<float>(.1, .2, .3);
 ```
 
 #### Bounded type parameters
@@ -1401,7 +1402,7 @@ enum States
     Waiting,
     Loading,
     Started,
-    Finished, // final tailing coma is valid
+    Finished, // final trailing comma is valid
 }
 ```
 
@@ -1481,6 +1482,8 @@ for (const auto item : collection) {
 ```
 
 ### Switch/Match
+
+The `switch` statement uses **fall-through** semantics: without a `break` statement, execution continues into the next `case` body. Use `break` to exit the switch block after each case.
 
 ```nl
 switch (value) {
@@ -1855,10 +1858,10 @@ The ternary operator has the form: `condition ? value_if_true : value_if_false`
 The nullish coalescing operator `??` provides a default value when the left operand is `null`. Unlike the elvis operator, it only checks for `null`, not other falsy values.
 
 ```nl
-MyObject a = null;
+string|null a = null;
 system.Out.print(a ?? "is null"); // prints "is null"
 
-MyObject b = getObject();
+string|null b = getString();
 system.Out.print(b ?? "default"); // prints b if b is not null, otherwise "default"
 
 string name = user.getName() ?? "Anonymous";
@@ -1883,7 +1886,7 @@ system.Out.print(a ?: "not applicable"); // prints "not applicable" (0 is falsy)
 bool flag = false;
 string result = flag ?: "not applicable"; // result = "not applicable"
 
-MyObject obj = null;
+string|null obj = null;
 string name = obj ?: "default"; // name = "default"
 
 int value = 42;
@@ -2021,7 +2024,7 @@ class readonly NumberFormatException extends RuntimeException {
     // Invalid numeric string format (e.g. system.Int.parseInt, system.Float.parseFloat)
 }
 class readonly IllegalArgumentException extends RuntimeException {
-    // Invalid argument (e.g. unknown timezone ID in system.time.TimeZone.get)
+    // Invalid argument (e.g. enum.from with unknown value, system.time.TimeZone.get with unknown ID)
 }
 
 // Checked exceptions used by the standard library (I/O, threads, format)

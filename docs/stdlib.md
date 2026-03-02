@@ -1,6 +1,6 @@
 # NL Standard Library (System API)
 
-This document describes the virtual standard library provided by the NL runtime for system interaction: standard streams (out, err, in), parsing, file system access (including glob, directories, paths), network sockets (TCP, UDP) and HTTP, threads and synchronization (Mutex, Semaphore), date/time with timezone, grep-style text search, environment variables, process listing and subprocess execution, string and regex utilities, random and UUID, encoding and base64. All types live in the **`system`**, **`system.io`**, **`system.net`**, **`system.thread`**, **`system.time`**, **`system.Env`**, **`system.ps`**, and **`system.text`** namespaces and are available without explicit import in user code (built-in bindings). Return types written as **`T|null`** (or other union types like **`Type1|Type2|null`**) denote nullable or union types as defined in the language specification (see [specs.md](specs.md)#union-types-and-explicit-nullable).
+This document describes the virtual standard library provided by the NL runtime for system interaction: standard streams (out, err, in), parsing, file system access (including glob, directories, paths), network sockets (TCP, UDP) and HTTP, threads and synchronization (Mutex, Semaphore), date/time with timezone, grep-style text search, environment variables, process listing and subprocess execution, string and regex utilities, random and UUID, encoding and base64. All types live in the **`system`**, **`system.io`**, **`system.net`**, **`system.thread`**, **`system.time`**, **`system.ps`**, and **`system.text`** namespaces and are available without explicit import in user code (built-in bindings). Return types written as **`T|null`** (or other union types like **`Type1|Type2|null`**) denote nullable or union types as defined in the language specification (see [specs.md](specs.md)#union-types-and-explicit-nullable).
 
 ---
 
@@ -9,6 +9,7 @@ This document describes the virtual standard library provided by the NL runtime 
 * [Namespaces](#namespaces)
 * [Result types](#result-types)
 * [Arrays (built-in)](#arrays-built-in)
+* [Core interfaces (built-in)](#core-interfaces-built-in)
 * [system.Out (stdout)](#systemout-stdout)
 * [system.Err (stderr)](#systemerr-stderr)
 * [system.In (stdin)](#systemin-stdin)
@@ -47,7 +48,7 @@ This document describes the virtual standard library provided by the NL runtime 
 
 | Namespace   | Purpose                          |
 |------------|-----------------------------------|
-| `system`   | Standard streams (Out, Err, In), parsing and conversion (Int, Float, Bool), String, Random, Uuid, **List&lt;T&gt;**, **Map&lt;K,V&gt;**, **MapEntry&lt;K,V&gt;** |
+| `system`   | Standard streams (Out, Err, In), parsing and conversion (Int, Float, Bool), String, Random, Uuid, Env, **List&lt;T&gt;**, **Map&lt;K,V&gt;**, **MapEntry&lt;K,V&gt;**; core interfaces (Stringable, Cloneable, ValueEquatable) |
 | `system.io`| File system (File, FileHandle, Directory, Path), glob, Grep |
 | `system.net`| Network (TcpListener, TcpStream, UdpSocket, Http) |
 | `system.thread`| Threads (Thread), synchronization (Mutex, Semaphore) |
@@ -142,6 +143,18 @@ Array types `T[]` are part of the language (see [specs.md](specs.md)#arrays). Cr
 
 ---
 
+## Core interfaces (built-in)
+
+The following interfaces are part of the language contract and live in the `system` namespace. They are defined in the language specification and must be recognized by the runtime. They are available without explicit import.
+
+| Interface | Defined in | Description |
+|-----------|-----------|-------------|
+| **Stringable** | [specs.md § Stringable interface](specs.md#stringable-interface) | `string toString()` — contract for converting reference types to string (used by string concatenation, `(string)` cast, `system.Out.print`). |
+| **Cloneable** | [specs.md § Cloneable interface](specs.md#cloneable-interface) | `Self clone()` — contract for object copying (shallow by default). |
+| **ValueEquatable** | [specs.md § ValueEquatable interface](specs.md#valueequatable-interface) | `bool valueEquals(const Self|null other)` + `int valueHash()` — contract for structural equality (used by `system.Map` for key lookup). |
+
+---
+
 ## system.Out (stdout)
 
 Standard output stream. All methods are **static**.
@@ -151,7 +164,7 @@ Standard output stream. All methods are **static**.
 | `print` | `static void print(string s)` | Writes `s` to standard output without a trailing newline. |
 | `println` | `static void println(string s)` | Writes `s` to standard output followed by a newline. |
 
-Overloads of `print` and `println` for other types (e.g. `int`, `float`, `bool`) may be provided by the runtime; they behave as if the value were converted to its string representation first.
+Overloads of `print` and `println` for other types (e.g. `int`, `float`, `bool`) **must** be provided by the runtime; they behave as if the value were converted to its string representation first.
 
 **Example**
 
@@ -285,13 +298,13 @@ Called on a string value, e.g. `text.length()`, `name.toUpperCase()`.
 
 ```nl
 string text = "  Hello, World  ";
-int n = text.length();                    // 15
+int n = text.length();                    // 16
 string upper = text.toUpperCase();        // "  HELLO, WORLD  "
 string trimmed = system.String.trim(text); // "Hello, World"
 string[] parts = system.String.split("a,b,c", ",");
 bool b = text.startsWith("  He");        // true
 int i = text.indexOf("World");           // 9
-string sub = text.substring(2, 8);        // "Hello"
+string sub = text.substring(2, 8);        // "Hello,"
 ```
 
 ---
@@ -528,7 +541,7 @@ Path manipulation. All methods are **static**.
 **Example**
 
 ```nl
-string path = system.io.Path.join(new string[] {"src", "com", "example", "App.nl"});
+string path = system.io.Path.join(new string[]{"src", "com", "example", "App.nl"});
 string dir = system.io.Path.dirname(path);
 string base = system.io.Path.basename(path);
 string|null ext = system.io.Path.extension(path);
@@ -894,7 +907,7 @@ Standard exceptions used by the system API. The hierarchy (Runtime vs Checked) i
 |-----------|------|-----------|-----------|
 | `IndexOutOfBoundsException` | Runtime | `system` | Array access via `[]` when index is out of range; `system.List.get`, `system.List.set` when index is out of range; `system.List.popBack`, `system.List.popFront` when the list is empty; **`string.charAt`, `string.substring`** when index or range is out of range |
 | `NumberFormatException` | Runtime | `system` | `system.Int.parseInt`, `system.Float.parseFloat` when the string format is invalid |
-| `IllegalArgumentException` | Runtime | `system.time` | `system.time.TimeZone.get()` when the timezone ID is unknown |
+| `IllegalArgumentException` | Runtime | `system` | `enum.from()` when value does not match any case; `system.time.TimeZone.get()` when the timezone ID is unknown |
 | `FileNotFoundException` | Checked | `system.io` | `system.io.File.open`, `system.io.File.readAllText` when the path does not exist or is not a file |
 | `IOException` | Checked | `system.io` | `system.io.File`, `system.io.Directory`, `system.io.Path`, `system.io.Grep`, and other I/O failures |
 | `IOException` | Checked | `system.net` | `system.net.TcpListener`, `system.net.TcpStream`, `system.net.UdpSocket`, `system.net.Http` on connection or read/write failure |
