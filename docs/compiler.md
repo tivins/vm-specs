@@ -35,6 +35,7 @@ complements [specs.md](specs.md) (language semantics) and [stdlib.md](stdlib.md)
     * [Nodiscard](#nodiscard)
 * [Reserved keywords](#reserved-keywords)
 * [Default values](#default-values)
+    * [Multidimensional array creation](#multidimensional-array-creation)
 * [Compiler invocation (nlc)](#compiler-invocation-nlc)
 
 ---
@@ -381,6 +382,22 @@ The compiler applies default values in two contexts:
 
 **Error:** `E031 — Cannot create array of non-nullable type '%s' with fixed size (no default value)`
 
+### Multidimensional array creation
+
+`new T[n₁][n₂]…[nₖ]` is syntactic sugar. The compiler desugars it into nested allocations:
+
+1. Evaluate all dimension expressions `n₁, n₂, …, nₖ` left-to-right and store in temporaries.
+2. Emit `NEW_ARRAY` for the outermost array (element type = `T[]…[]` with k−1 brackets, size = `n₁`).
+3. For each index `i` in `[0, n₁)`, emit a loop that allocates the next-level array (`NEW_ARRAY` with element type = `T[]…[]` with k−2 brackets, size = `n₂`) and stores it with `ARRAY_STORE`. Repeat recursively for each remaining dimension.
+
+**Partial dimensions** (`new T[n₁][]`): the compiler only allocates the outermost array; inner elements are `null`. The element type of the outer array is the inner array type as nullable (e.g. `int[]|null`).
+
+Dimension sizes may only be omitted as a **contiguous suffix** from the right: `new int[3][][]` is valid, `new int[][3][]` is not.
+
+**Error:** `E038 — Non-first dimension size omitted in middle position in '%s'`
+
+`E031` still applies at each level: `new MyClass[n]` is rejected if `MyClass` is non-nullable and has no default value.
+
 ### Class property defaults
 
 Properties declared without an initializer receive the default value for their type (same table as above).
@@ -425,6 +442,7 @@ Non-nullable reference properties have no default and must be initialized — se
 | E029 | Entry point | Incorrect main signature |
 | E030 | Keywords | Reserved keyword used as identifier |
 | E031 | Arrays | Fixed-size array of non-nullable type |
+| E038 | Arrays | Non-first dimension size omitted in middle position |
 | E032 | Abstract/Final | Cannot instantiate abstract class |
 | E033 | Abstract/Final | Class must be abstract (unimplemented abstract method) |
 | E034 | Abstract/Final | Abstract method cannot have body |

@@ -67,7 +67,7 @@ Implement all compile-time checks defined in compiler.md. This milestone require
 - **Exception checking** — [compiler.md § Exception checking](compiler.md#exception-checking): checked propagation (E015), inheritance rules (E016, E017).
 - **Visibility enforcement** — [compiler.md § Visibility](compiler.md#visibility-enforcement): E018, E019.
 - **Parameter validation** — [compiler.md § Parameter validation](compiler.md#parameter-validation): `ref` rules (E020–E024), named/optional rules (E025–E028).
-- **Entry point validation** — [compiler.md § Entry point](compiler.md#entry-point-validation): E029, E030, E031.
+- **Entry point validation** — [compiler.md § Entry point](compiler.md#entry-point-validation): E029, E030, E031, E038.
 - **Warnings:** `nodiscard` — [compiler.md § Nodiscard](compiler.md#nodiscard): W001.
 
 ### Testable at this stage
@@ -231,7 +231,7 @@ Build the test runner that executes the YAML test suite, and validate the full t
 - **Compile-only tests** (`compile_only: true`): compile and verify success, no execution.
 - **Module-structure assertions:** parse the compiled module and verify `expected_class`, `expected_methods`, `expected_fields`, `expected_constant_pool_contains`.
 - **Test discovery:** scan `tests/` directory, run all `*.yaml` files, report pass/fail summary.
-- **Error tests (extension):** tests that verify the compiler correctly rejects invalid programs with specific error codes (E001–E037, W001). Requires extending the test format or adding a convention (e.g. `expected_error: "E003"` header key).
+- **Error tests (extension):** tests that verify the compiler correctly rejects invalid programs with specific error codes (E001–E038, W001). Requires extending the test format or adding a convention (e.g. `expected_error: "E003"` header key).
 
 ### Testable at this stage
 

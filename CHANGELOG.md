@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.0 — 2026-03-02
+
+### Added
+
+- **docs/specs.md** — § Multidimensional arrays: `T[][]` as array of arrays, `new T[n₁][n₂]` fixed-size creation, partial dimensions (`new T[n][]`), initializer lists, chained indexing. Contiguous-suffix rule for omitted dimensions (coherence § V-4).
+- **docs/compiler.md** — § Multidimensional array creation: desugaring into nested `NEW_ARRAY` + loop + `ARRAY_STORE`. E038 — non-first dimension size omitted in middle position.
+
+### Changed
+
+- **docs/vm.md** — § Array layout: clarified that multidimensional arrays are nested arrays with `element_type` tag `5` (reference) and `TYPE_DESC` for inner type. § Array operations: note that no new opcode is needed; compilation uses existing `NEW_ARRAY`/`ARRAY_STORE`.
+- **docs/compiler.md** — Error code summary: added E038 (Arrays).
+- **README.md** — Language highlights: arrays now mention multidimensional (`T[][]`); error code count 37 → 38.
+- **docs/coherence.md** — V-4 resolved: multidimensional array creation fully specified.
+- **docs/milestones.md** — Error test range E001–E037 → E001–E038.
+
 ## 0.7.0 — 2026-03-02
 
 ### Added

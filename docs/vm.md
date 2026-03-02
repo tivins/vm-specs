@@ -318,6 +318,8 @@ inherited and local fields.
 Arrays are **fixed-size** after creation. Index access outside `[0, length-1]` throws
 `IndexOutOfBoundsException`.
 
+**Multidimensional arrays** (`T[][]`, `T[][][]`, etc.) are represented as nested arrays. The outer array's `element_type` tag is `5` (reference) and each element points to an inner array object on the heap. The `TYPE_DESC` constant pool entry for the outer array's element type is the inner type descriptor (e.g. `"int[]"` for a `int[][]`, `"int[][]"` for a `int[][][]`).
+
 ### String representation
 
 Strings are immutable heap objects. Internally a string stores:
@@ -479,6 +481,8 @@ Branch offsets are relative to the address of the **opcode** of the branch instr
 | `ARRAY_LOAD` | — | `[…, ref, index → …, value]` | Load element at `index` from array `ref`. Throws `IndexOutOfBoundsException` if out of range. |
 | `ARRAY_STORE` | — | `[…, ref, index, value → …]` | Store `value` at `index` in array `ref`. Throws `IndexOutOfBoundsException` if out of range. |
 | `ARRAY_LENGTH` | — | `[…, ref → …, int]` | Push the length of the array. |
+
+> **Multidimensional arrays.** `new T[n₁][n₂]…[nₖ]` is compiled as a series of `NEW_ARRAY` instructions combined with loops and `ARRAY_STORE` — no dedicated multidimensional opcode exists. See [compiler.md § Multidimensional array creation](compiler.md#multidimensional-array-creation) for the full desugaring.
 
 ### Field access
 

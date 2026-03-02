@@ -230,6 +230,43 @@ auto empty = new string[]{};
 
 Arrays are fixed-size after creation; for dynamic growth or shrink, use `system.List<T>` (see [stdlib](stdlib.md)).
 
+#### Multidimensional arrays
+
+A multidimensional array is an array of arrays. The type `T[][]` is equivalent to `(T[])[]` — an array whose elements are themselves arrays of `T`. Deeper nesting (`T[][][]`, etc.) follows the same principle.
+
+**Fixed-size creation:**
+
+`new T[n₁][n₂]…[nₖ]` creates a k-dimensional array. The outermost array has `n₁` elements, each of which is an array of `n₂` elements, and so on. All leaf elements are initialized to the [default value](#null-initialization-and-default-values) for `T`.
+
+```nl
+int[][] matrix = new int[3][4];      // 3 rows of 4 ints, all 0
+string[][] grid = new string[2][2];  // 2×2 grid, all ""
+```
+
+**Partial dimension:** only the first dimension is required. Trailing dimensions may be omitted, producing an array of `null` references that must be assigned before use:
+
+```nl
+int[][] ragged = new int[3][];
+ragged[0] = new int[]{1, 2};
+ragged[1] = new int[]{3, 4, 5};
+ragged[2] = new int[]{6};
+```
+
+When trailing dimensions are omitted, the element type of the outer array is nullable (`int[]|null` in the example above) until each element is assigned.
+
+**Initializer list:**
+
+```nl
+int[][] m = new int[][]{
+    new int[]{1, 2, 3},
+    new int[]{4, 5, 6}
+};
+```
+
+Access uses chained indexing: `matrix[row][col]`.
+
+Only the first dimension size may be omitted in a middle position — sizes can only be left out as a **contiguous suffix** from the right. For example, `new int[3][][]` is valid (allocates only the outermost array) but `new int[][3][]` is a compile-time error (see [compiler.md § Multidimensional array creation](compiler.md#multidimensional-array-creation)).
+
 #### Access (get/set)
 
 The subscript operator `[i]` is used to read or write the element at index `i` (zero-based). Accessing an index outside the valid range `[0, length()-1]` throws **`IndexOutOfBoundsException`** (a runtime exception).
