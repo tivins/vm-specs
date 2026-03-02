@@ -179,8 +179,7 @@ tracked here for completeness. Some may be intentional design choices.
 
 ### VI-3. `equals()` / `hashCode()` convention
 
-- [ ] No convention for structural equality of objects. `==` on references compares identity (vm.md:442).
-  No standard mechanism for using objects as `system.Map` keys with value-based equality.
+- [x] **Resolved (2026-03-02):** Added **ValueEquatable** interface with `valueEquals(const Self|null other)` and `valueHash()` in specs.md § ValueEquatable interface. `==` on references remains identity-based (vm.md). `system.Map<K,V>` uses valueEquals/valueHash when K implements ValueEquatable (stdlib.md, vm.md).
 
 ### VI-4. Bounded generics
 

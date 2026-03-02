@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.0 — 2026-03-02
+
+### Added
+
+- **docs/specs.md** — § ValueEquatable interface: `valueEquals(const Self|null other)` and `valueHash()` for structural (value-based) equality of objects. Enables using objects as `system.Map` keys with value-based lookup (coherence § VI-3).
+- **docs/specs.md** — § Comparison operators: clarified that `==` on references compares identity; value equality via ValueEquatable.
+
+### Changed
+
+- **docs/stdlib.md** — § system.Map: key equality semantics — primitives/string by value; reference types implementing ValueEquatable by valueEquals/valueHash; others by identity.
+- **docs/vm.md** — § CMP_EQ: reference to ValueEquatable for value-based equality. § Templates: Map key lookup uses valueEquals/valueHash when K implements ValueEquatable.
+- **README.md** — Language highlights: added ValueEquatable interface.
+- **docs/coherence.md** — VI-3 resolved: valueEquals/valueHash convention specified.
+
 ## 0.5.0 — 2026-03-02
 
 ### Added

@@ -49,6 +49,7 @@ write concise code without sacrificing type safety or runtime guarantees.
     * [Final classes and methods](#final-classes-and-methods)
     * [Virtual method dispatch](#virtual-method-dispatch)
     * [Cloneable interface](#cloneable-interface)
+    * [ValueEquatable interface](#valueequatable-interface)
 * [Enums](#enums)
     * [Basic enums](#basic-enums)
     * [Typed enums](#typed-enums-string-or-int)
@@ -1310,6 +1311,49 @@ class Point implements Cloneable {
 
 Usage: `auto copy = original.clone();` — no dedicated `clone` keyword. The `clone()` method is an ordinary instance method.
 
+### ValueEquatable interface
+
+Structural (value-based) equality of objects is provided via the **ValueEquatable** interface. A class that implements ValueEquatable must provide:
+
+- **`bool valueEquals(const Self|null other)`** — returns `true` if `this` and `other` are structurally equal. Returns `false` if `other` is `null` or if the runtime type of `other` differs from `this`. The implementation defines what "structurally equal" means (typically: same field values).
+- **`int valueHash()`** — returns a hash code consistent with `valueEquals`: if `a.valueEquals(b)` then `a.valueHash() == b.valueHash()`. The reverse is not required (hash collisions are allowed).
+
+The built-in `==` operator on references compares **identity** (same object instance), not value. Use `valueEquals()` when you need structural equality — for example, to use objects as `system.Map` keys with value-based lookup.
+
+```nl
+interface ValueEquatable {
+    public bool valueEquals(const Self|null other);
+    public int valueHash();
+}
+
+class Point implements ValueEquatable {
+    public int x;
+    public int y;
+
+    public construct(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public bool valueEquals(const Self|null other) {
+        if (other == null) return false;
+        return this.x == other.x && this.y == other.y;
+    }
+
+    public int valueHash() {
+        return 31 * this.x + this.y;
+    }
+}
+
+// Usage:
+auto p1 = new Point(1, 2);
+auto p2 = new Point(1, 2);
+p1 == p2;           // false — different instances (identity)
+p1.valueEquals(p2); // true  — same values (structural)
+```
+
+Primitive types (`int`, `float`, `bool`, `byte`) and `string` use value equality by default; they do not implement ValueEquatable. `system.Map<K, V>` uses `valueEquals` and `valueHash` for key lookup when `K` is a reference type that implements ValueEquatable; otherwise it uses reference identity (see [stdlib.md § system.Map](stdlib.md#systemmap)).
+
 ## Enums
 
 ### Basic enums
@@ -1723,7 +1767,7 @@ The string representation of `int`, `float`, and `bool` is implementation-define
 
 ### Comparison operators
 
-- `==` (equality), `!=` (inequality)
+- `==` (equality), `!=` (inequality) — For primitives and `string`: value equality. For references: **identity** (same object instance). For value-based equality of objects, use the [ValueEquatable](#valueequatable-interface) interface and `valueEquals()`.
 - `<` (less than), `>` (greater than)
 - `<=` (less than or equal), `>=` (greater than or equal)
 - `<=>` (spaceship operator) - returns `-1` if left < right, `0` if equal, `1` if left > right

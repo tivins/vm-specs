@@ -440,7 +440,7 @@ an `int`.
 
 | Name | Operands | Stack | Description |
 |------|----------|-------|-------------|
-| `CMP_EQ` | — | `[…, a, b → …, bool]` | Equality. For `int`, `float`, `byte`, `bool`: value equality. For `string`: content equality. For references: reference identity. For `null`: `null == null` is `true`; `null == non-null` is `false`. |
+| `CMP_EQ` | — | `[…, a, b → …, bool]` | Equality. For `int`, `float`, `byte`, `bool`: value equality. For `string`: content equality. For references: **reference identity** (same object). For value-based equality of objects, use the [ValueEquatable](specs.md#valueequatable-interface) interface (`valueEquals` / `valueHash`). For `null`: `null == null` is `true`; `null == non-null` is `false`. |
 | `CMP_NE` | — | `[…, a, b → …, bool]` | Not-equal (inverse of `CMP_EQ`). |
 | `CMP_LT` | — | `[…, a, b → …, bool]` | Less-than. Defined for `int`, `float`, `byte` (numeric comparison) and `string` (lexicographic). |
 | `CMP_GT` | — | `[…, a, b → …, bool]` | Greater-than. |
@@ -682,6 +682,11 @@ references (e.g. `"system.List<int>"`, `"system.Map<string, int>"`). The VM reco
 template instantiations and provides type-appropriate implementations. Internally, the native implementation
 may use a single generic implementation with tagged values (since all VM values are already tagged), but this
 is an implementation detail.
+
+For **`system.Map<K,V>`**, key lookup uses:
+- **Primitives** (`int`, `float`, `bool`, `byte`) and **`string`**: built-in value equality.
+- **Reference types implementing ValueEquatable**: `valueEquals(other)` for equality, `valueHash()` for hashing (see [specs.md § ValueEquatable interface](specs.md#valueequatable-interface)).
+- **Other reference types**: reference identity (same object instance).
 
 ### Ref parameters (boxing)
 

@@ -360,6 +360,12 @@ int last = list.popBack();  // 3
 
 Key-value storage with keys of type `K` and values of type `V`. Lives in namespace `system`; use as `system.Map<K, V>`.
 
+**Key equality semantics:**
+
+- **Primitives** (`int`, `float`, `bool`, `byte`) and **`string`**: keys are compared by value.
+- **Reference types implementing [ValueEquatable](specs.md#valueequatable-interface)**: keys are compared using `valueEquals(other)` and `valueHash()` — two objects with the same structure are considered the same key.
+- **Other reference types**: keys are compared by reference identity (same object instance). For value-based keys, implement ValueEquatable on the key class.
+
 | Method | Signature | Description |
 |--------|------------|-------------|
 | `construct` | `construct()` | Creates an empty map. |
