@@ -12,6 +12,7 @@
 
 ### Changed
 
+- **README.md** — Language highlights: clarified that characters are represented as `string` of length 1 (no `char` type); added virtual-by-default for instance methods; renamed "`??` and `?:`" to "nullish coalescing (`??`, `?:`)" for clarity. Documentation table: stdlib description updated to `system.Env`, `system.ps.Process` (coherence V-5).
 - **docs/specs.md** — Keywords: removed `virtual`, `delete`, `clone`; added links for `abstract`, `final`. Lifecycle: `new` only (no delete/clone).
 - **docs/specs.md** — Destructor: wording corrected — "when the object becomes unreachable and is reclaimed by the garbage collector" (no explicit delete).
 - **docs/specs.md** — Operators: removed `delete` and `clone` from the list.
