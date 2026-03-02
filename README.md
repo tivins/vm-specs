@@ -23,6 +23,7 @@ Read **specs.md** first for the language; then **compiler.md** for compile-time 
 
 ```
 nlvm/
+├── archives/         # Archived documents (e.g. coherence_closed_20260303.md)
 ├── docs/
 │   ├── specs.md      # Language specification
 │   ├── compiler.md   # Compiler checks and error codes

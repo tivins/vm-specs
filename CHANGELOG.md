@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.1 — 2026-03-03
+
+### Changed
+
+- **archives/coherence_closed_20260303.md** — Coherence tracker moved from `docs/coherence.md` to `archives/` and renamed. All items were resolved; document archived for reference.
+
 ## 0.8.0 — 2026-03-02
 
 ### Added
