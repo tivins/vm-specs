@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.12 — 2026-03-03
+
+### Changed
+
+- **README.md** — Restructured for clarity: single documentation table, "Where to start" by audience (discover / implement compiler / implement VM / tests), condensed language highlights, removed redundancies.
+
 ## 0.8.11 — 2026-03-03
 
 ### Changed

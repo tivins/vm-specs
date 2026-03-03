@@ -2,71 +2,62 @@
 
 **NL** is a statically-typed, object-oriented programming language designed for type safety and clarity. It draws from C++ (templates, type system), Java (syntax, file layout), modern PHP (match, typed enums), and Kotlin-style null safety with compile-time initialization guarantees.
 
-This repository holds the **complete specification** of NL: language semantics, compiler checks, standard library API, and virtual machine (bytecode and execution model). There is **no compiler or interpreter implementation** here — only the documentation needed to build one.
-
-## Documentation
-
-Read [specs.md](docs/specs.md) first for the language; then [compiler.md](docs/compiler.md) for compile-time rules, [stdlib.md](docs/stdlib.md) for the runtime API, [vm.md](docs/vm.md) for implementing an interpreter or code generator, and [milestones.md](docs/milestones.md) for a suggested implementation roadmap.
-
-### **Language specification** - **[docs/specs.md](docs/specs.md)**
-
-Lexical rules, types, classes, enums, control flow, operators, operator overloading, anonymous functions, exceptions, and entry point. Defines *what* the language allows.
-
-### **Compiler semantic analyses.** - **[docs/compiler.md](docs/compiler.md)**
-
-Definite assignment, null safety, type checking, immutability (`const` / `readonly`), exception checking, visibility, parameter validation, entry-point validation. Defines *what* the compiler must verify and reject (39 error codes, 1 warning). § [Compiler invocation (nlc)](docs/compiler.md#compiler-invocation-nlc) defines the compiler CLI.
-
-### **Standard library API.** - **[docs/stdlib.md](docs/stdlib.md)**
-
-System namespaces (`system`, `system.io`, `system.net`, `system.thread`, `system.time`, etc.): streams, parsing, files, directories, network (TCP/UDP/HTTP), threads, mutex/semaphore, date/time, `system.Env`, `system.ps.Process`, regex, encoding. Defines the contract between user code and the runtime.
-
-### **Virtual machine specification.** - **[docs/vm.md](docs/vm.md)**
-
-Stack-based execution model, value representation, binary module format (constant pool, class/field/method descriptors), object/array/string layout, instruction set (~50 opcodes), method dispatch (vtables), exception handling (tables, unwinding, stack trace), closures, compilation strategies (templates, ref params, switch/match, etc.), program startup, stdlib binding, threading, and GC contract. Defines *how* compiled code is represented and executed. § [VM invocation (nlvm)](docs/vm.md#vm-invocation-nlvm) defines the VM CLI.
+**This repository contains only the specification** — language semantics, compiler checks, standard library API, and virtual machine. There is no compiler or interpreter implementation here.
 
 ---
 
-### **Test format.** - **[docs/tests.md](docs/tests.md)**
+## Documentation
 
-Structure of test files in `tests/` (YAML front matter, header keys, source blocks with `#NLFILE`-style separators, run vs compile-only). For use by a future compiler/tooling.
+| Document | Purpose |
+|----------|---------|
+| [specs.md](docs/specs.md) | Language syntax and semantics — *what* the language allows |
+| [compiler.md](docs/compiler.md) | Semantic analyses, 39 error codes, 1 warning — *what* the compiler must verify |
+| [stdlib.md](docs/stdlib.md) | Standard library API (`system`, `system.io`, etc.) — contract between user code and runtime |
+| [vm.md](docs/vm.md) | Bytecode format, instruction set, execution model — *how* compiled code runs |
+| [tests.md](docs/tests.md) | Test file format (YAML, `#NLFILE` blocks) for `tests/` |
+| [milestones.md](docs/milestones.md) | Implementation roadmap — 9 phases from lexer to optimizations |
+| [optimizations.md](docs/optimizations.md) | Optimization contract — what implementations *may* optimize |
 
-### **Implementation milestones.** - **[docs/milestones.md](docs/milestones.md)**
+---
 
-Recommended phases for building the compiler, VM, and test runner — from lexer/parser to full integration. Each milestone lists its scope, spec references, and what becomes testable.
+## Where to start
 
-### **Optimization contract.** - **[docs/optimizations.md](docs/optimizations.md)**
+| Goal | Path |
+|------|------|
+| **Discover NL** | [specs.md](docs/specs.md) → Language highlights below |
+| **Implement a compiler** | [specs.md](docs/specs.md) → [compiler.md](docs/compiler.md) → [milestones.md](docs/milestones.md) |
+| **Implement a VM** | [specs.md](docs/specs.md) → [stdlib.md](docs/stdlib.md) → [vm.md](docs/vm.md) → [milestones.md](docs/milestones.md) |
+| **Write or run tests** | [tests.md](docs/tests.md) → `tests/` |
 
-Principles, compiler optimizations (constant folding, devirtualization, etc.), VM optimizations (string interning, JIT, etc.), and prohibited transformations. Defines what implementations *may* optimize while preserving observable semantics.
+---
 
 ## Project structure
 
 ```
 nlvm-specs/
-├── docs/           # Specs, compiler, stdlib, vm, tests format, milestones, optimizations
-├── review/         # Coherence tracker (coherence.md), archives
-├── tests/          # YAML acceptance tests (see docs/tests.md)
+├── docs/       # All specification documents
+├── review/     # Coherence tracker (coherence.md), archives
+├── tests/      # YAML acceptance tests (format in docs/tests.md)
 ├── CHANGELOG.md
 └── README.md
 ```
 
-Tests in `tests/` are described in YAML with multiple NL source blocks per file (see [docs/tests.md](docs/tests.md)). They are intended for use by a future compiler/tooling; the repo does not include a test runner.
+The `tests/` folder holds YAML files with NL source blocks. They are intended for a future compiler/tooling; this repo does not include a test runner.
 
-## Using these specs
-
-- **Implementing a compiler:** Use **specs.md** for syntax and semantics, **compiler.md** for all analyses and diagnostics to implement.
-- **Implementing an interpreter or VM:** Use **specs.md**, **stdlib.md**, and **vm.md** together; **vm.md** defines the bytecode format and execution model so that different front-ends can target the same VM.
-- **Writing NL code (once a compiler exists):** **specs.md** and **stdlib.md** are the programmer-facing references.
+---
 
 ## Language highlights
 
-- **Types:** `int`, `float`, `bool`, `byte`, `string` (characters as `string` of length 1), fixed-size arrays `T[]` (multidimensional as arrays of arrays `T[][]`), union types (`T|null`), `auto`, `typedef`.
-- **OOP:** Classes, single inheritance, interfaces, visibility (`public` / `protected` / `private`), `abstract` / `final`, `readonly` classes/properties, `const` methods/parameters, constructors (`construct`) and destructors (`destruct`), `Cloneable` and `ValueEquatable` interfaces. Instance methods are virtual by default (Java-style).
-- **Generics:** Template classes and methods with optional bounded type parameters (`extends`), monomorphization at compile time.
-- **Control flow:** `if`/`else`, `while`, `for` (classic and for-each), `switch`/`match`, `break`/`continue`.
-- **Functions:** Anonymous functions (closures), first-class callbacks, capture by reference with boxing when needed.
-- **Exceptions:** Checked vs runtime exceptions, `throws`, `try`/`catch`/`finally`, stack traces.
-- **Operators:** Arithmetic, comparison, logical, string concatenation, nullish coalescing (`??`, `?:`), overloaded operators.
+- **Types:** `int`, `float`, `bool`, `byte`, `string`, fixed-size arrays `T[]`, union types `T|null`, `auto`, `typedef`
+- **OOP:** Classes, single inheritance, interfaces, visibility, `abstract`/`final`, `readonly`/`const`, constructors/destructors
+- **Generics:** Template classes and methods with bounded type parameters, monomorphization at compile time
+- **Control flow:** `if`/`else`, `while`, `for` (classic and for-each), `switch`/`match`
+- **Functions:** Anonymous functions (closures), first-class callbacks
+- **Exceptions:** Checked vs runtime, `throws`, `try`/`catch`/`finally`
+- **Operators:** Arithmetic, comparison, logical, string concatenation, nullish coalescing (`??`, `?:`), overloading
+
+---
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for version history and notable changes to the specification.
+See [CHANGELOG.md](CHANGELOG.md) for version history and notable changes.
