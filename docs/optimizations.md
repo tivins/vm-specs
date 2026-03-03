@@ -47,6 +47,7 @@ The following optimizations are **optional** (`may`). The compiler may apply the
 | **Inlining** | Replace a call site with the callee's body for small methods, `static` methods, or when heuristics suggest benefit. |
 | **Tail call optimization** | Reuse the current call frame for recursive calls in tail position, avoiding stack growth. |
 | **String literal concatenation** | Fold `"a" + "b"` when both operands are string literals into a single constant pool entry. |
+| **Incremental compilation** | Cache compiled modules per source file; recompile only modified files and their dependents (transitively). Uses the module-per-file model (see [vm.md § Module format](vm.md#module-format)) and explicit `use` dependencies (see [specs.md § Imports](specs.md#imports)). Cache invalidation (hash, mtime), cache location, and template instantiation handling are implementation-defined. |
 
 ---
 

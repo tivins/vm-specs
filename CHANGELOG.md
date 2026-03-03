@@ -1,10 +1,18 @@
 # Changelog
 
+## 0.8.13 — 2026-03-03
+
+### Added
+
+- **docs/optimizations.md** — § Compiler optimizations: incremental compilation — cache compiled modules per source file, recompile only modified files and dependents; uses module-per-file model and explicit `use` dependencies.
+- **docs/compiler.md** — § Compiler invocation: `--incremental`, `-i` option for incremental compilation.
+- **docs/milestones.md** — Milestone 9: added incremental compilation to compiler optimizations scope.
+
 ## 0.8.12 — 2026-03-03
 
 ### Changed
 
-- **README.md** — Restructured for clarity: single documentation table, "Where to start" by audience (discover / implement compiler / implement VM / tests), condensed language highlights, removed redundancies.
+- **README.md** — Restructured for clarity: single documentation table, "Where to start" by audience (discover / implement compiler / implement VM / tests), condensed language highlights, removed redundancies. Clarified that `tests/` help implementers validate their compiler or VM against the spec.
 
 ## 0.8.11 — 2026-03-03
 

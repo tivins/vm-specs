@@ -253,7 +253,7 @@ Implement optional compiler and VM optimizations as defined in [optimizations.md
 
 - **Compiler optimizations** — [optimizations.md § Compiler optimizations](optimizations.md#compiler-optimizations):
   constant folding, constant propagation, dead code elimination, devirtualization, inlining, tail call optimization,
-  string literal concatenation.
+  string literal concatenation, incremental compilation.
 - **VM optimizations** — [optimizations.md § VM optimizations](optimizations.md#vm-optimizations): string interning,
   JIT compilation, superinstructions, inline caching, GC tuning.
 - **Prohibited transformations** — [optimizations.md § Prohibited transformations](optimizations.md#prohibited-transformations):

@@ -468,7 +468,7 @@ Non-nullable reference properties have no default and must be initialized — se
 ## Optimizations
 
 The compiler **may** apply optional optimizations such as constant folding, dead code elimination, devirtualization,
-and inlining. All optimizations must preserve observable semantics. See [optimizations.md](optimizations.md) for the
+inlining, and incremental compilation. All optimizations must preserve observable semantics. See [optimizations.md](optimizations.md) for the
 full optimization contract (compiler and VM).
 
 ---
@@ -496,6 +496,7 @@ The compiler is invoked as:
 | `-h`, `--help` | Print usage and exit. |
 | `-Werror` | Treat all warnings as errors. |
 | `-v`, `--verbose` | Verbose diagnostics (implementation-defined). |
+| `--incremental`, `-i` | *(Optional)* Enable incremental compilation. Cache compiled modules and recompile only changed files and their dependents. See [optimizations.md § Compiler optimizations](optimizations.md#compiler-optimizations). |
 
 ### Exit codes
 

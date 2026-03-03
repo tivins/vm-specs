@@ -42,7 +42,7 @@ nlvm-specs/
 └── README.md
 ```
 
-The `tests/` folder holds YAML files with NL source blocks. They are intended for a future compiler/tooling; this repo does not include a test runner.
+The `tests/` folder holds YAML acceptance tests. They help implementers validate their compiler or VM against the specification. This repo does not include a test runner.
 
 ---
 
