@@ -61,3 +61,5 @@ The `tests/` folder holds YAML acceptance tests. They help implementers validate
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history and notable changes.
+
+For the broader **language evolution** history (vvm repository, Nov–Dec 2025), see [vvm/CHANGELOG.md](https://github.com/tivins/vvm/blob/main/CHANGELOG.md).

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.14 — 2026-03-03
+
+### Changed
+
+- **README.md** — Added link to [vvm/CHANGELOG.md](https://github.com/tivins/vvm/blob/main/CHANGELOG.md) for broader language evolution history (Nov–Dec 2025).
+
 ## 0.8.13 — 2026-03-03
 
 ### Added
