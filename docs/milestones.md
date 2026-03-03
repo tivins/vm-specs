@@ -130,7 +130,7 @@ Build the execution engine for primitive programs (no objects, no exceptions yet
   - Control flow: `IF_TRUE`, `IF_FALSE`, `GOTO`, `GOTO_W`.
   - Method invocation: `INVOKE_STATIC`, `RETURN`, `RETURN_VALUE`.
   - String operations: `STR_CONCAT`.
-- **Program startup (partial)** — [vm.md § Program startup](vm.md#program-startup): load entry module, build `argc`/`args`, invoke `main`, return exit code.
+- **Program startup (partial)** — [vm.md § Program startup](vm.md#program-startup): load entry module, build `args`, invoke `main`, return exit code.
 
 ### Testable at this stage
 

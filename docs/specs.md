@@ -2324,11 +2324,10 @@ The entry point of an NL program is defined by a `main` method, similar to Java.
 The `main` method must have the following exact signature:
 
 ```nl
-public static int main(int argc, string[] args)
+public static int main(string[] args)
 ```
 
-- **`argc`**: The number of command-line arguments passed to the program, including the program name itself
-- **`args`**: An array of strings containing the command-line arguments. The first element (`args[0]`) is the program name, followed by any additional arguments provided when executing the program
+- **`args`**: An array of strings containing the command-line arguments. The first element (`args[0]`) is the program name, followed by any additional arguments provided when executing the program. Use `args.length()` to get the number of arguments.
 - **Return value**: An integer representing the exit code. A return value of `0` typically indicates successful execution, while non-zero values indicate various error conditions
 
 ### Class requirements
@@ -2339,7 +2338,7 @@ The `main` method can be defined in any class within the program. The class name
 namespace com.example.project;
 
 class Application {
-    public static int main(int argc, string[] args) {
+    public static int main(string[] args) {
         system.Out.print("Application started");
         return 0;
     }
@@ -2356,8 +2355,8 @@ A program must contain exactly one `main` method. If no `main` method is found d
 namespace com.example.project;
 
 class Calculator {
-    public static int main(int argc, string[] args) {
-        if (argc < 4) {
+    public static int main(string[] args) {
+        if (args.length() < 4) {
             system.Out.print("Usage: calculator <operation> <a> <b>");
             return 1; // Exit code 1 indicates an error
         }

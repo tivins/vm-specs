@@ -26,7 +26,7 @@ class ClassTest { ... }
 #NLFILE test/class/Main.nl
 namespace test.class;
 class Main {
-    public static int main(int argc, string[] args) { ... }
+    public static int main(string[] args) { ... }
 }
 ```
 
@@ -95,7 +95,7 @@ class ClassTest {
 namespace test.class;
 use test.class.ClassTest;
 class Main {
-	public static int main(int argc, string[] args) {
+	public static int main(string[] args) {
 		ClassTest a = new ClassTest();
 		auto b = new ClassTest();
 		return 0;

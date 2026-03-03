@@ -950,8 +950,8 @@ END:
 3. **Initialize statics.** Execute static field initializers for each class, in dependency order (a class's
    initializer runs before any code that references it).
 4. **Create main thread.** Allocate a thread (see [Threading model](#threading-model)).
-5. **Build arguments.** Construct a `string[]` array from command-line arguments. Compute `argc`.
-6. **Invoke main.** Create a frame for `main(int, string[])` with `argc` in local 0 and `args` in local 1.
+5. **Build arguments.** Construct a `string[]` array from command-line arguments.
+6. **Invoke main.** Create a frame for `main(string[])` with `args` in local 0.
    Begin execution.
 7. **Exit.** When `main` returns, use the returned `int` value as the process exit code. If an unhandled
    exception propagates out of `main`, print the exception and stack trace to stderr and exit with code `1`.
@@ -968,8 +968,8 @@ The VM is invoked as:
 
 | Argument | Description |
 |----------|-------------|
-| `<module-or-program>` | Path to the main module (`.nlm`) or to a program bundle (implementation-defined). This module (or the designated entry in the bundle) must contain the `main(int, string[])` entry point (see [specs.md § Entry point](specs.md#entry-point)). |
-| `[program args...]` | Optional arguments passed to the NL program as `args` (after `args[0]`, the program name). The VM builds `argc` and `args` as described in [Program startup](#program-startup). |
+| `<module-or-program>` | Path to the main module (`.nlm`) or to a program bundle (implementation-defined). This module (or the designated entry in the bundle) must contain the `main(string[])` entry point (see [specs.md § Entry point](specs.md#entry-point)). |
+| `[program args...]` | Optional arguments passed to the NL program as `args` (after `args[0]`, the program name). The VM builds `args` as described in [Program startup](#program-startup). |
 
 If `--` is used, everything after it is passed as program arguments; otherwise, the first unrecognized non-option argument starts the module path and subsequent arguments are program args.
 

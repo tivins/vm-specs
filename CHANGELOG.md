@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.5 — 2026-03-03
+
+### Changed
+
+- **docs/specs.md** — § Entry point: removed redundant `argc` parameter from `main` signature. Use `args.length()` instead. New signature: `public static int main(string[] args)`.
+- **docs/vm.md** — § Program startup: build only `args`; invoke `main(string[])` with `args` in local 0.
+- **docs/compiler.md** — § Entry point validation: expected signature `main(string[])`; E029 message updated.
+- **docs/tests.md**, **docs/milestones.md** — Updated main signature references.
+- **tests/00001_class.yaml** — Main method uses new signature.
+
 ## 0.8.4 — 2026-03-03
 
 ### Added

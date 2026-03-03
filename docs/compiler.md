@@ -336,18 +336,18 @@ The compiler validates call sites with named parameters:
 The compiler verifies that the program contains exactly one `main` method with the signature:
 
 ```
-public static int main(int argc, string[] args)
+public static int main(string[] args)
 ```
 
 - The method must be `public static`.
 - The return type must be `int`.
-- The parameter list must be `(int, string[])`.
+- The parameter list must be `(string[])`.
 - Exactly **one** such method must exist across the entire program. Zero or more than one is an error.
 - This requirement does not apply to library projects (no entry point needed).
 
 **Error:** `E027 — No 'main' method found`
 **Error:** `E028 — Multiple 'main' methods found`
-**Error:** `E029 — 'main' method has incorrect signature (expected: public static int main(int, string[]))`
+**Error:** `E029 — 'main' method has incorrect signature (expected: public static int main(string[]))`
 
 ---
 
