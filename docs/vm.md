@@ -752,7 +752,7 @@ type.
 
 ### For-each loops
 
-`for (auto item : collection)` and `for (const auto item : collection)` are desugared identically by the compiler. The `const` qualifier affects only compile-time checks (see [specs.md § Loops](specs.md#loops), [compiler.md § For-each loop in const context](compiler.md#for-each-loop-in-const-context)); the bytecode pattern is the same:
+`for (auto item : collection)` and `for (const auto item : collection)` are desugared identically by the compiler. The `const` qualifier affects only compile-time checks (see [specs.md § Loops](specs.md#loops), [compiler.md § For-each loop in const context](compiler.md#for-each-loop-in-const-context)); the bytecode pattern is the same. The `ARRAY_LOAD` + `STORE` sequence yields copy semantics: for value types, a copy of the value; for reference types, a copy of the reference (see [specs.md § Loops](specs.md#loops)).
 
 - **For arrays (`T[]`)**: the compiler generates an index-based loop:
   ```

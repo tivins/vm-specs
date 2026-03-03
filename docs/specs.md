@@ -1487,6 +1487,8 @@ for (auto item : collection) {
 }
 ```
 
+**For-each loop — copy semantics.** The loop variable holds a **copy** of each element: for value types (`int`, `float`, `bool`, `byte`), it is a copy of the value; for reference types (objects, `string`), it is a copy of the reference. Reassigning the loop variable never affects the collection. For reference types, calling mutating methods on the loop variable modifies the referred-to object; `const` on the loop variable prevents such calls.
+
 **For-each loop — `const` optional.** Both forms are valid:
 
 - `for (const auto item : collection)` — the loop variable is read-only; assignments to `item` and calls to non-const methods on `item` are rejected.
