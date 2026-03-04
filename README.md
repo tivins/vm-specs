@@ -11,7 +11,7 @@
 | Document | Purpose |
 |----------|---------|
 | [specs.md](docs/specs.md) | Language syntax and semantics — *what* the language allows |
-| [compiler.md](docs/compiler.md) | Semantic analyses, 39 error codes, 1 warning — *what* the compiler must verify |
+| [compiler.md](docs/compiler.md) | Semantic analyses, 42 error codes, 1 warning — *what* the compiler must verify |
 | [stdlib.md](docs/stdlib.md) | Standard library API (`system`, `system.io`, etc.) — contract between user code and runtime |
 | [vm.md](docs/vm.md) | Bytecode format, instruction set, execution model — *how* compiled code runs |
 | [tests.md](docs/tests.md) | Test file format (YAML, `#NLFILE` blocks) for `tests/` |

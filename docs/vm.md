@@ -268,6 +268,10 @@ Each method invocation creates a **call frame** on the VM's call stack. A call f
 When a method returns, its frame is popped and the return value (if any) is pushed onto the caller's operand
 stack.
 
+**Stack overflow.** If creating a new call frame would exceed the VM's maximum call stack depth, the VM throws
+`StackOverflowException` (a `RuntimeException`). The maximum depth is implementation-defined but must be
+documented by the runtime.
+
 ### Static storage
 
 Each class has a **static storage area** holding one slot per `static` field. Static fields are initialized to

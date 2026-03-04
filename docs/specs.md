@@ -79,7 +79,7 @@ write concise code without sacrificing type safety or runtime guarantees.
 ### Source code files
 
 Like Java, NL requires that the definition of an object (class, enumeration, etc.) be in a file of the same name. The
-namespace must correspond to the folder hierarchy.
+namespace must correspond to the folder hierarchy. Each file contains **exactly one** top-level class or enum definition. **Nested class definitions** (a class defined inside another class) **are not allowed**.
 
 ```nl
 // file: <root>/src/com/example/myProject/MyClass.nl
@@ -206,6 +206,21 @@ my var // Error : Contains ' '
 * `string`, `int`, `float`, `bool` (`true`, `false`), `byte`, `null`
 * `void` - special type for methods that do not return a value
 * Arrays uses `[]`: `string[]`, `int[]`, `byte[]`, `customObject[]`
+
+#### Float literal format
+
+Float literals consist of an optional integer part, a decimal point `.`, and an optional fractional part. At least one of the integer or fractional parts must be present. The accepted formats are:
+
+| Format | Example | Value |
+|--------|---------|-------|
+| Integer and fractional part | `3.14` | 3.14 |
+| Leading zero optional | `.5` | 0.5 |
+| Trailing fractional optional | `2.` | 2.0 |
+| Zero | `0.0` | 0.0 |
+
+Scientific notation (e.g. `1e10`, `3.14e-2`) is **not supported**. A numeric literal without a decimal point is always `int`, never `float`.
+
+#### Byte literals
 
 NL does not provide byte literal syntax. To obtain a byte value, use an explicit cast: `(byte) intExpr`. The expression must evaluate to an integer; values outside 0–255 are treated as in [int → byte conversion](#type-conversions-and-casting) (low-order bits; overflow implementation-defined).
 
@@ -458,7 +473,7 @@ There is **no** implicit conversion between `bool` and numeric types (`int`, `fl
 
 | Source → Target | Rule | Runtime behavior |
 |-----------------|------|-------------------|
-| `float` → `int` | Narrowing; explicit cast required. | Truncation toward zero. Values outside the range of `int` have undefined behavior (or implementation-defined). |
+| `float` → `int` | Narrowing; explicit cast required. | Truncation toward zero. Values outside the range of `int` are clamped to `INT_MIN` / `INT_MAX`. |
 | `int` → `byte` | Narrowing; explicit cast required. | Low-order bits are kept; overflow is implementation-defined if the value does not fit in `byte`. |
 | Any → `string` | Allowed if source is a primitive or implements [Stringable](#stringable-interface). | Primitives use built-in string representation; reference types use `toString()`. Otherwise compile-time error. |
 | Superclass → subclass | Downcast; allowed at compile-time when the static type could be the target. | **Runtime check**: if the object is not actually an instance of the target type, **`InvalidCastException`** is thrown (see [Exception class hierarchy](#exception-class-hierarchy)). |
@@ -476,7 +491,7 @@ The **`(string) expr`** cast follows the same rules as [string concatenation](#s
 |------------|----------|---------------|-------|
 | `byte` → `int` | ✓ | — | |
 | `int` → `float` | ✓ | — | |
-| `float` → `int` | — | `(int) expr` | Truncation toward zero. |
+| `float` → `int` | — | `(int) expr` | Truncation toward zero; clamped on overflow. |
 | `int` → `byte` | — | `(byte) expr` | Low-order bits. |
 | Any → `string` | — | `(string) expr` | Primitives or Stringable. |
 | Class → superclass | ✓ | — | Upcast. |
@@ -774,6 +789,14 @@ class MyClass
     }
 }
 ```
+
+Inside a `static` method, the following are **forbidden** (compile-time error):
+
+- `this` — there is no instance.
+- `Self` — the return-type shorthand for fluent methods relies on an instance context.
+- Access to instance (non-static) properties or methods without an explicit receiver.
+
+Only static members of the enclosing class and local variables may be used.
 
 #### Const methods and parameters
 
@@ -1266,6 +1289,14 @@ Template methods are particularly useful when you need generic functionality wit
 
 ### Extends, Implements
 
+A class may extend one superclass and implement one or more interfaces. Multiple interfaces are separated by commas:
+
+```
+class ClassName extends SuperClass implements Interface1, Interface2, Interface3 { ... }
+```
+
+Both `extends` and `implements` are optional. When both are present, `extends` must appear before `implements`.
+
 ```nl
 class Foo {
     protected void doSomethingProtected() {
@@ -1282,7 +1313,28 @@ class Bar extends Foo implements Stringable
         return "Bar";
     }
 }
+```
 
+Multiple interfaces:
+
+```nl
+class Point implements Stringable, Cloneable, ValueEquatable {
+    public int x;
+    public int y;
+
+    public construct(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public string toString() { return "(" + this.x + ", " + this.y + ")"; }
+    public Self clone() { return new Self(this.x, this.y); }
+    public bool valueEquals(const Self|null other) {
+        if (other == null) return false;
+        return this.x == other.x && this.y == other.y;
+    }
+    public int valueHash() { return 31 * this.x + this.y; }
+}
 ```
 
 #### Stringable interface
@@ -1518,6 +1570,11 @@ for (init; condition; increment) {
     // break; // available
 }
 
+// Multiple init variables of the same type
+for (int i = 0, j = 10; i < j; i++, j--) {
+    system.Out.print(i);
+}
+
 for (const auto item : collection) {
     // item type is deduced from collection element type
 }
@@ -1526,6 +1583,10 @@ for (auto item : collection) {
     // item is mutable; use when the loop body needs to modify the loop variable
 }
 ```
+
+**For-loop — multiple init variables.** The `init` part of `for (init; cond; incr)` may declare multiple variables of the **same type**, separated by commas: `for (int i = 0, j = 10; i < j; i++, j--)`. Multiple declarations of different types are not allowed (use separate declarations before the loop).
+
+**For-loop — variable scoping.** Variables declared in the `init` part of a `for` loop are scoped to the for block. They are not visible after the closing `}` of the loop body. The same applies to the loop variable of a for-each loop.
 
 **For-each loop — copy semantics.** The loop variable holds a **copy** of each element: for value types (`int`, `float`, `bool`, `byte`), it is a copy of the value; for reference types (objects, `string`), it is a copy of the reference. Reassigning the loop variable never affects the collection. For reference types, calling mutating methods on the loop variable modifies the referred-to object; `const` on the loop variable prevents such calls.
 
@@ -1941,22 +2002,20 @@ The elvis operator `?:` provides a default value when the left operand is falsy.
 
 ```nl
 int a = 0;
-system.Out.print(a ?: "not applicable"); // prints "not applicable" (0 is falsy)
-
-bool flag = false;
-string result = flag ?: "not applicable"; // result = "not applicable"
+int fallback = a ?: -1;  // fallback = -1 (0 is falsy)
 
 string|null obj = null;
 string name = obj ?: "default"; // name = "default"
 
 int value = 42;
-system.Out.print(value ?: "not applicable"); // prints 42 (value is truthy)
+int result = value ?: -1; // result = 42 (value is truthy)
 ```
 
 The elvis operator has the form: `value ?: default_value`
 
 - If `value` is falsy (`false`, `null`, or `0`), the expression evaluates to `default_value`
 - If `value` is truthy (any other value), the expression evaluates to `value`
+- Both operands must have compatible types; the result type is the common type of the two (or the union type if they differ)
 - More permissive than nullish coalescing as it handles multiple falsy conditions
 - Useful for providing defaults when dealing with values that might be zero, false, or null
 
@@ -2085,6 +2144,9 @@ class readonly NumberFormatException extends RuntimeException {
 }
 class readonly IllegalArgumentException extends RuntimeException {
     // Invalid argument (e.g. enum.from with unknown value, system.time.TimeZone.get with unknown ID)
+}
+class readonly StackOverflowException extends RuntimeException {
+    // Call stack exhaustion (e.g. infinite recursion). Thrown by the VM.
 }
 
 // Checked exceptions used by the standard library (I/O, threads, format)

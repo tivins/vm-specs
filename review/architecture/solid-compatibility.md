@@ -43,10 +43,11 @@ This document analyzes whether projects using NLVM can adhere to the SOLID princ
 | Aspect | NL Support | Details |
 |--------|------------|---------|
 | Polymorphism | Yes | Inheritance, virtual dispatch |
-| Exception covariance | Yes | Subclasses can throw the same or fewer exceptions |
+| Exception covariance | Yes | Subclasses can throw the same or fewer checked exceptions (E016, E017) |
+| Runtime exceptions in `throws` | Neutral | Documentation-only; not subject to E016/E017 inheritance rules — an override may freely add or remove them (see [compiler.md § Exception inheritance rules](../docs/compiler.md#exception-inheritance-rules)) |
 | Formal contracts | No | No built-in pre/postconditions or assertions |
 
-**Conclusion:** The type system allows correct substitution of subtypes. Strict adherence to LSP remains a design discipline (contracts, invariants), not a language guarantee.
+**Conclusion:** The type system allows correct substitution of subtypes. Exception covariance is enforced by the compiler for checked exceptions (E016, E017), preserving LSP at the contract level. Runtime exceptions listed in `throws` are documentation-only and do not form part of the formal contract — they are not checked on override, which is consistent with LSP (runtime exceptions were already unconstrained before). Strict adherence to LSP for behavioral contracts (invariants, postconditions) remains a design discipline.
 
 ---
 
@@ -56,10 +57,10 @@ This document analyzes whether projects using NLVM can adhere to the SOLID princ
 |--------|------------|---------|
 | Interfaces | Yes | `interface`, implicitly abstract methods |
 | Focused interfaces | Yes | E.g. `Stringable`, `Cloneable`, `ValueEquatable` |
-| Multiple implementation | Probable | VM: `interfaces_count`, `interfaces[]` — `implements A, B, C` syntax not formally defined (coherence II-7) |
+| Multiple implementation | Yes | `implements A, B, C` syntax defined in specs.md § Extends, Implements (coherence II-7 resolved) |
 | Interface inheritance | Undefined | `interface A extends B` not documented (coherence II-8) |
 
-**Conclusion:** ISP is well supported by the interface model. The VM handles multiple interfaces; the `implements A, B, C` syntax is expected. Interface inheritance is a gap in the current spec.
+**Conclusion:** ISP is well supported by the interface model. Multiple interface implementation is formally defined (`implements A, B, C`). Interface inheritance (`interface A extends B`) is still a gap in the current spec.
 
 ---
 
@@ -83,19 +84,18 @@ This document analyzes whether projects using NLVM can adhere to the SOLID princ
 | **S**RP | 8/10 | Encapsulation and file separation; discipline required |
 | **O**CP | 9/10 | Inheritance, interfaces, templates, virtual dispatch |
 | **L**SP | 8/10 | Correct polymorphism; LSP remains a discipline |
-| **I**SP | 8/10 | Focused interfaces; multiple implementation probable, interface inheritance undefined |
+| **I**SP | 9/10 | Focused interfaces; multiple implementation defined; interface inheritance undefined |
 | **D**IP | 7/10 | Interfaces + manual injection; no native DI |
 
 ---
 
 ## Points to Watch
 
-1. **Multiple interfaces:** The `implements A, B, C` syntax is not formally defined (coherence II-7). The VM supports it; a clarification in the spec would be useful.
-2. **Interface inheritance:** `interface A extends B` is not documented (coherence II-8).
-3. **DI:** No injection container; constructor injection remains manual.
+1. **Interface inheritance:** `interface A extends B` is not documented (coherence II-8).
+2. **DI:** No injection container; constructor injection remains manual.
 
 ---
 
 ## Conclusion
 
-NLVM projects can adhere to the SOLID principles. NL provides the necessary building blocks (interfaces, inheritance, polymorphism, templates, encapsulation). Principles S, O, L, and I are well covered; DIP is possible via interfaces and manual injection, as described in the DDD analysis. The few gaps (multiple interfaces, interface inheritance) are mainly documentation shortcomings rather than limitations of the object model.
+NLVM projects can adhere to the SOLID principles. NL provides the necessary building blocks (interfaces, inheritance, polymorphism, templates, encapsulation). Principles S, O, L, and I are well covered; DIP is possible via interfaces and manual injection, as described in the DDD analysis. The remaining gap (interface inheritance) is a documentation shortcoming rather than a limitation of the object model.

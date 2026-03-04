@@ -29,6 +29,8 @@ complements [specs.md](specs.md) (language semantics) and [stdlib.md](stdlib.md)
     * [Exception inheritance rules](#exception-inheritance-rules)
 * [Visibility enforcement](#visibility-enforcement)
 * [Inheritance modifiers (abstract, final)](#inheritance-modifiers-abstract-final)
+    * [Static context restrictions](#static-context-restrictions)
+    * [Duplicate definitions](#duplicate-definitions)
 * [Parameter validation](#parameter-validation)
     * [Ref parameter rules](#ref-parameter-rules)
     * [Named and optional parameter rules](#named-and-optional-parameter-rules)
@@ -63,6 +65,14 @@ Control-flow constructs affect assignment status:
 | `for` | Same as `while` for the loop body. The initializer (`init` part) contributes normally. |
 | `try/catch/finally` | The variable is definitely assigned after the `try/catch` only if it is assigned in the `try` block **and** in every `catch` block. Assignments in `finally` always contribute. |
 | `switch/match` | The variable is definitely assigned after the `switch` only if **every** `case` (including `default`) assigns it, and the switch is exhaustive. |
+
+**Terminal statements.** The following statements unconditionally end the current control-flow path; any code following them in the same block is unreachable:
+
+- `return` (with or without a value)
+- `throw`
+- `system.ps.Process.exit(code)` (see [stdlib.md § system.ps](stdlib.md#systemps))
+
+In a method with a non-void return type, a path that ends with `throw` or `Process.exit()` satisfies the requirement for a return value (no missing-return error).
 
 **Error:** `E001 — Variable '%s' may not have been initialized`
 
@@ -256,6 +266,12 @@ This applies to:
 Runtime exceptions (`RuntimeException` and subclasses) are exempt: they do not require `throws` declarations and
 can propagate freely.
 
+**Documentation-only `throws`:** A method **may** list runtime exception types in its `throws` clause for documentation
+purposes (e.g. `static int parseInt(string s) throws NumberFormatException`). The compiler **does not enforce** such
+declarations: callers are not required to catch or re-declare them, and the compiler does not emit E015 for runtime
+exceptions regardless of whether they appear in a `throws` clause. This allows API authors to signal common failure
+modes without imposing try/catch on callers.
+
 **Error:** `E015 — Unhandled checked exception '%s' — must be caught or declared in 'throws'`
 
 ### Exception inheritance rules
@@ -265,6 +281,10 @@ exception declared by the parent. Specifically:
 - For each exception type `E` in the parent's `throws` clause, the child's `throws` clause must include `E` or a
   subclass of `E`.
 - The child may not introduce new checked exception types that are not subtypes of exceptions declared by the parent.
+
+Runtime exceptions listed in a `throws` clause (see [Documentation-only `throws`](#checked-exception-propagation))
+are **not subject to these inheritance rules**. An overriding method may freely add or remove runtime exception
+types from its `throws` clause. E016 and E017 apply only to checked exceptions.
 
 **Error:** `E016 — Overriding method does not declare exception '%s' from parent method`
 **Error:** `E017 — Overriding method declares exception '%s' not thrown by parent method`
@@ -310,6 +330,25 @@ The compiler enforces the rules for `abstract` and `final` as defined in [specs.
 
 **Error:** `E035 — Cannot extend final class '%s'`
 **Error:** `E036 — Cannot override final method '%s'`
+
+### Static context restrictions
+
+Inside a `static` method, the compiler must reject:
+- Use of `this` (there is no instance).
+- Use of `Self` (the return-type shorthand for fluent methods relies on an instance context).
+- Access to instance (non-static) properties or methods without an explicit receiver.
+
+**Error:** `E040 — Cannot use '%s' in a static context`
+
+### Duplicate definitions
+
+- If a class declares two methods with the same name **and** the same parameter types (identical signature), the compiler must reject the duplicate.
+- If two modules define the same fully qualified class name, the compiler (or linker) must reject the conflict.
+
+**Signature** for duplicate detection means **method name and parameter types only**. Return type and `throws` clause do **not** distinguish methods: two methods with the same name and parameter types are duplicates (E041) even if they differ by return type or by declared exceptions.
+
+**Error:** `E041 — Duplicate method '%s' with identical signature in class '%s'`
+**Error:** `E042 — Duplicate class definition '%s'`
 
 ---
 
@@ -473,6 +512,9 @@ Non-nullable reference properties have no default and must be initialized — se
 | E034 | Abstract/Final | Abstract method cannot have body |
 | E035 | Abstract/Final | Cannot extend final class |
 | E036 | Abstract/Final | Cannot override final method |
+| E040 | Static context | Cannot use `this`, `Self`, or instance member in static method |
+| E041 | Duplicates | Duplicate method with identical signature |
+| E042 | Duplicates | Duplicate class definition |
 | W001 | Warning | Nodiscard return value discarded |
 
 ---

@@ -829,7 +829,7 @@ All methods are **static**.
 | `run` | `static ProcessResult run(string[] args) throws IOException` | Starts a process with the given arguments; waits for it to finish. Returns exit code and captured stdout/stderr. |
 | `run` | `static ProcessResult run(string command) throws IOException` | Runs the command via the platform shell; waits for completion. |
 | `pid` | `static int pid()` | Returns the current process ID. |
-| `exit` | `static void exit(int code)` | Terminates the process with the given exit code. Does not return. |
+| `exit` | `static void exit(int code)` | Terminates the process with the given exit code. **Terminal statement**: does not return; the compiler treats subsequent code as unreachable (same as `throw`). |
 | `getCwd` | `static string getCwd()` | Returns the current working directory path. |
 | `setCwd` | `static void setCwd(string path) throws IOException` | Changes the current working directory. |
 
@@ -910,6 +910,7 @@ Standard exceptions used by the system API. The hierarchy (Runtime vs Checked) i
 | `IndexOutOfBoundsException` | Runtime | `system` | Array access via `[]` when index is out of range; `system.List.get`, `system.List.set` when index is out of range; `system.List.popBack`, `system.List.popFront` when the list is empty; **`string.charAt`, `string.substring`** when index or range is out of range |
 | `NumberFormatException` | Runtime | `system` | `system.Int.parseInt`, `system.Float.parseFloat` when the string format is invalid |
 | `IllegalArgumentException` | Runtime | `system` | `enum.from()` when value does not match any case; `system.time.TimeZone.get()` when the timezone ID is unknown |
+| `StackOverflowException` | Runtime | `system` | Thrown by the VM when the call stack is exhausted (e.g. infinite recursion) |
 | `FileNotFoundException` | Checked | `system.io` | `system.io.File.open`, `system.io.File.readAllText` when the path does not exist or is not a file |
 | `IOException` | Checked | `system.io` | `system.io.File`, `system.io.Directory`, `system.io.Path`, `system.io.Grep`, and other I/O failures; **read/write/flush on closed FileHandle** |
 | `IOException` | Checked | `system.net` | `system.net.TcpListener`, `system.net.TcpStream`, `system.net.UdpSocket`, `system.net.Http` on connection or read/write failure; **read/write on closed TcpStream; send/receive on closed UdpSocket** |

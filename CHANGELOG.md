@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.8.25 — 2026-03-04
+
+### Changed
+
+- **docs/compiler.md** — § Exception inheritance rules: clarified that runtime exceptions in documentation-only `throws` are not subject to E016/E017 inheritance rules; overrides may freely add or remove them.
+- **docs/compiler.md** — § Duplicate definitions: clarified that signature = name + parameter types only; return type and `throws` do not distinguish methods for E041.
+- **review/architecture/solid-compatibility.md** — § LSP: added runtime exception `throws` interaction analysis (neutral for LSP). § ISP: updated to reflect multiple interface implementation now formally defined (coherence II-7 resolved). Summary scores and points-to-watch updated.
+
+## 0.8.24 — 2026-03-04
+
+### Changed
+
+- **docs/compiler.md** — § Checked exception propagation: `throws` may list runtime exceptions for documentation purposes; compiler does not enforce them. Resolves coherence I-5.
+- **docs/specs.md** — § Float literal format: defined accepted float literal formats (`3.14`, `.5`, `2.`, `0.0`); no scientific notation. Resolves coherence II-5.
+- **docs/specs.md** — § Extends, Implements: defined comma-separated syntax for multiple interfaces (`implements A, B, C`) with example. Resolves coherence II-7.
+- **docs/specs.md** — § Static methods: explicitly forbids `this`, `Self`, and instance member access in static context.
+- **docs/compiler.md** — § Static context restrictions: added E040. Resolves coherence II-12.
+- **docs/specs.md** — § Source code files: explicitly states nested class definitions are not allowed. Resolves coherence II-13.
+- **docs/specs.md** — § Loops: multiple same-type init declarations allowed in for-loop; variables scoped to the for block. Resolves coherence II-14 and II-15.
+- **docs/compiler.md** — § Duplicate definitions: added E041 (duplicate method signature) and E042 (duplicate class definition). Resolves coherence II-17 and IV-6.
+- **docs/specs.md** — § Elvis operator: examples rewritten with same-type operands; type compatibility note added. Resolves coherence III-7.
+- **docs/specs.md** — § Type conversions: `float → int` overflow behavior changed from "undefined" to clamping (`INT_MIN`/`INT_MAX`), aligned with vm.md. Resolves coherence IV-5.
+- **docs/compiler.md** — § Terminal statements: `return`, `throw`, and `Process.exit()` defined as terminal statements (unreachable code after). Resolves coherence VI-9.
+- **docs/stdlib.md** — § system.ps.Process: `exit` marked as terminal statement.
+- **docs/specs.md** — § Exception class hierarchy: added `StackOverflowException extends RuntimeException`.
+- **docs/vm.md** — § Call frame: stack overflow behavior defined (throws `StackOverflowException`).
+- **docs/stdlib.md** — Exceptions table: added `StackOverflowException`. Resolves coherence V-8.
+- **review/coherence.md** — Marked 11 items as resolved (I-5, II-5, II-7, II-12, II-13, II-14, II-15, II-17, III-7, IV-5, IV-6, V-8, VI-9); updated summary counts.
+
 ## 0.8.23 — 2026-03-04
 
 ### Added

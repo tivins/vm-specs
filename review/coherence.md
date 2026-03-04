@@ -12,12 +12,12 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| [I. Cross-document inconsistencies](#i-cross-document-inconsistencies) | 8 (5 resolved) | Contradictions between documents |
-| [II. Language specification omissions](#ii-language-specification-omissions) | 17 | Features referenced or implied but never formally defined in specs.md |
-| [III. Incorrect examples](#iii-incorrect-examples) | 11 (7 resolved) | Code that would not compile, produces wrong results, or contradicts the spec |
-| [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 7 | Missing pieces in vm.md or compiler.md |
-| [V. Standard library issues](#v-standard-library-issues) | 8 (1 resolved) | stdlib.md problems (inconsistencies, missing API) |
-| [VI. Under-specified semantics](#vi-under-specified-semantics) | 9 | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
+| [I. Cross-document inconsistencies](#i-cross-document-inconsistencies) | 8 (6 resolved) | Contradictions between documents |
+| [II. Language specification omissions](#ii-language-specification-omissions) | 17 (9 resolved) | Features referenced or implied but never formally defined in specs.md |
+| [III. Incorrect examples](#iii-incorrect-examples) | 11 (8 resolved) | Code that would not compile, produces wrong results, or contradicts the spec |
+| [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 7 (2 resolved) | Missing pieces in vm.md or compiler.md |
+| [V. Standard library issues](#v-standard-library-issues) | 8 (2 resolved) | stdlib.md problems (inconsistencies, missing API) |
+| [VI. Under-specified semantics](#vi-under-specified-semantics) | 9 (1 resolved) | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
 | [VII. Documentation and editorial errors](#vii-documentation-and-editorial-errors) | 6 (6 resolved) | Typos, wrong numbers, stale cross-references |
 | [VIII. Security-related specification gaps](#viii-security-related-specification-gaps) | 10 (1 resolved) | Missing security hardening, unsafe APIs, unspecified safety behavior — see [security-audit.md](security-audit.md) |
 
@@ -53,9 +53,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### I-5. `throws` declared for runtime exceptions in stdlib
 
-- [ ] **stdlib.md** — `system.Int.parseInt` and `system.Float.parseFloat` are declared `throws NumberFormatException`. But `NumberFormatException extends RuntimeException`, and the spec states (compiler.md § Checked exception propagation): *"Runtime exceptions (`RuntimeException` and subclasses) are exempt: they do not require `throws` declarations."* Declaring `throws` for a `RuntimeException` subclass is at best misleading. If the compiler ignores it (as compiler.md implies), the declaration is documentation-only — but this is never stated. If the compiler enforces it, callers of `parseInt` would need a try/catch, which contradicts the runtime-exception exemption.
-
-  **Decision needed:** either (a) remove `throws NumberFormatException` from these signatures (and document what they throw in prose), or (b) add a rule that `throws` may list runtime exceptions for documentation purposes but the compiler does not enforce them.
+- [x] **stdlib.md** — `system.Int.parseInt` and `system.Float.parseFloat` are declared `throws NumberFormatException`. But `NumberFormatException extends RuntimeException`, and the spec states (compiler.md § Checked exception propagation): *"Runtime exceptions (`RuntimeException` and subclasses) are exempt: they do not require `throws` declarations."* *(fixed 0.8.24: option (b) — compiler.md § Checked exception propagation now states that `throws` may list runtime exceptions for documentation purposes; the compiler does not enforce them)*
 
 ### I-6. `IllegalArgumentException` namespace attribution
 
@@ -91,7 +89,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### II-5. Float literal format not specified
 
-- [ ] **specs.md** uses `.1`, `.2`, `.3` as float literals (line 1145). But the spec never defines the accepted float literal formats. Is a leading zero optional (`.1` vs `0.1`)? Is scientific notation supported (`1e10`)? This is essential for a lexer.
+- [x] **specs.md** uses `.1`, `.2`, `.3` as float literals (line 1145). But the spec never defines the accepted float literal formats. *(fixed 0.8.24: specs.md § Float literal format — formats `3.14`, `.5`, `2.`, `0.0` defined; scientific notation not supported)*
 
 ### II-6. `const` on local variables
 
@@ -99,7 +97,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### II-7. Multiple interface implementation syntax
 
-- [ ] **vm.md module format** has `interfaces_count` and `interfaces[]`, supporting multiple interfaces. But **specs.md** only shows single-interface syntax: `class Bar extends Foo implements Stringable`. The syntax for implementing multiple interfaces (e.g. `implements Stringable, Cloneable, ValueEquatable`) is never shown or defined.
+- [x] **vm.md module format** has `interfaces_count` and `interfaces[]`, supporting multiple interfaces. But **specs.md** only showed single-interface syntax. *(fixed 0.8.24: specs.md § Extends, Implements — comma-separated syntax `implements A, B, C` defined with example)*
 
 ### II-8. Interface extending interface
 
@@ -119,19 +117,19 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### II-12. `this` in static context
 
-- [ ] The spec should explicitly state that `this`, `Self`, and instance member access are forbidden in `static` methods. This is implied but never stated.
+- [x] The spec should explicitly state that `this`, `Self`, and instance member access are forbidden in `static` methods. *(fixed 0.8.24: specs.md § Static methods + compiler.md § Static context restrictions — E040 added)*
 
 ### II-13. Nested / inner classes
 
-- [ ] The one-class-per-file rule (specs.md § Source code files) implies no nested classes, but this is not explicitly stated. Can a class definition appear inside another class?
+- [x] The one-class-per-file rule (specs.md § Source code files) implies no nested classes, but this was not explicitly stated. *(fixed 0.8.24: specs.md § Source code files — explicitly states nested class definitions are not allowed)*
 
 ### II-14. For-loop — multiple init variables
 
-- [ ] Can the init part of `for (init; cond; incr)` declare multiple variables? E.g. `for (int i = 0, j = 10; …; …)`. Not specified.
+- [x] Can the init part of `for (init; cond; incr)` declare multiple variables? *(fixed 0.8.24: specs.md § Loops — multiple same-type declarations allowed, e.g. `for (int i = 0, j = 10; …; …)`)*
 
 ### II-15. Scoping of for-loop init variable
 
-- [ ] Is the variable declared in `for (int i = 0; …; …)` scoped to the for block or visible after it? Most languages scope it to the block, but NL doesn't specify.
+- [x] Is the variable declared in `for (int i = 0; …; …)` scoped to the for block or visible after it? *(fixed 0.8.24: specs.md § Loops — variables declared in for-loop init are scoped to the for block)*
 
 ### II-16. `Self` in interface context
 
@@ -139,7 +137,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### II-17. Duplicate method signatures
 
-- [ ] What happens if a class declares two methods with the same name and parameter types (exact duplicates)? There is no error code for this. It should be a compile-time error.
+- [x] What happens if a class declares two methods with the same name and parameter types (exact duplicates)? *(fixed 0.8.24: compiler.md § Duplicate definitions — E041 for duplicate method, E042 for duplicate class; also resolves IV-6)*
 
 ---
 
@@ -191,15 +189,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### III-7. Elvis operator examples — type incompatibility
 
-- [ ] **specs.md lines 1880–1881, 1884–1885:**
-  ```
-  int a = 0;
-  system.Out.print(a ?: "not applicable"); // int ?: string → ???
-  
-  bool flag = false;
-  string result = flag ?: "not applicable"; // bool ?: string → ???
-  ```
-  The elvis operator `a ?: b` where `a` is `int` and `b` is `string` produces an expression whose type is `int|string` — but `system.Out.print` takes `string`, not `int|string`. Similarly, assigning `bool ?: string` to `string` should fail type checking. These examples only work if implicit type coercion exists, which is not defined.
+- [x] **specs.md** — Elvis operator examples used incompatible types (`int ?: string`, `bool ?: string`). *(fixed 0.8.24: examples rewritten with same-type operands; type compatibility note added)*
 
 ### III-8. Fluent method `save()` — missing return statement
 
@@ -253,11 +243,11 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### IV-5. `F2I` clamping — inconsistent with specs.md
 
-- [ ] **vm.md F2I** says *"Values outside `int` range are clamped to INT_MIN / INT_MAX."* But **specs.md § Type conversions** says *"Values outside the range of `int` have undefined behavior (or implementation-defined)."* These are different: clamping is a defined behavior, "undefined" is not. One document should align with the other.
+- [x] **vm.md F2I** says *"Values outside `int` range are clamped to INT_MIN / INT_MAX."* But **specs.md § Type conversions** said *"undefined behavior."* *(fixed 0.8.24: specs.md aligned to vm.md — clamping to INT_MIN/INT_MAX, safety-first)*
 
 ### IV-6. No error code for duplicate method/class definitions
 
-- [ ] If the same fully qualified class name appears in two modules, or if a class defines two methods with identical signatures, there is no error code in compiler.md for these conflicts.
+- [x] If the same fully qualified class name appears in two modules, or if a class defines two methods with identical signatures, there was no error code. *(fixed 0.8.24: compiler.md § Duplicate definitions — E041 and E042 added; see also II-17)*
 
 ### IV-7. Exception `readonly` vs VM `stackTrace` assignment
 
@@ -297,7 +287,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### V-8. No `StackOverflowException` in exception hierarchy
 
-- [ ] Infinite recursion will exhaust the call stack. There is no `StackOverflowException` (or equivalent) in the exception hierarchy (specs.md § Exception class hierarchy). The VM behavior on stack overflow is undefined.
+- [x] Infinite recursion will exhaust the call stack. There was no `StackOverflowException` in the exception hierarchy. *(fixed 0.8.24: added `StackOverflowException extends RuntimeException` in specs.md § Exception class hierarchy, stdlib.md exceptions table, and vm.md § Call frame)*
 
 ---
 
@@ -337,7 +327,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### VI-9. `system.ps.Process.exit` — control flow impact
 
-- [ ] `Process.exit(int code)` is documented as *"Does not return."* But in a method with return type `int`, calling `exit()` without a `return` statement would normally be a compile error (missing return value). The spec should clarify that `exit` is a terminal statement (like `throw`) so the compiler knows the code after it is unreachable.
+- [x] `Process.exit(int code)` is documented as *"Does not return."* But the compiler didn't know the code after it is unreachable. *(fixed 0.8.24: compiler.md § Terminal statements — `return`, `throw`, `Process.exit()` defined as terminal; stdlib.md updated)*
 
 ---
 
