@@ -4,6 +4,8 @@ Audit performed on **2026-03-04**, against spec version **0.8.21**.
 
 This report identifies potential security vulnerabilities, weaknesses, and missing hardening measures in the NL language specification. Each finding is mapped to a [CWE](https://cwe.mitre.org/) identifier and references known CVE patterns where applicable. Findings are classified by severity (Critical, High, Medium, Low, Informational).
 
+**Test coverage:** For each finding, a test must be added in `tests/` following the format defined in [tests.md](../docs/tests.md). The test file name should include the CWE identifier for traceability (e.g. `m7_0030_read_after_close_cwe416.yaml`).
+
 ---
 
 ## Summary
