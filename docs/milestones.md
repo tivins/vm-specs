@@ -64,7 +64,7 @@ Implement all compile-time checks defined in compiler.md. This milestone require
 - **Definite assignment analysis** — [compiler.md § Definite assignment](compiler.md#definite-assignment-analysis): E001, E002.
 - **Null safety** — [compiler.md § Null safety](compiler.md#null-safety): E003, E004.
 - **Type checking** — [compiler.md § Type checking](compiler.md#type-checking): `auto` (E005), templates (E006, E037), casts (E007), string concatenation (E008), operator compatibility (E009).
-- **Immutability enforcement** — [compiler.md § Immutability](compiler.md#immutability-enforcement): `const` methods (E010, E011), `const` parameters (E012), for-each in const context (E039), `readonly` (E013, E014).
+- **Immutability enforcement** — [compiler.md § Immutability](compiler.md#immutability-enforcement): `const` methods (E010, E011), `const` parameters and locals (E012), for-each in const context (E039), `readonly` (E013, E014).
 - **Exception checking** — [compiler.md § Exception checking](compiler.md#exception-checking): checked propagation (E015), inheritance rules (E016, E017).
 - **Visibility enforcement** — [compiler.md § Visibility](compiler.md#visibility-enforcement): E018, E019.
 - **Parameter validation** — [compiler.md § Parameter validation](compiler.md#parameter-validation): `ref` rules (E020–E022), named/optional rules (E023–E026).

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.8.20 — 2026-03-04
+
+### Changed
+
+- **docs/specs.md** — § Const methods and parameters: local variables may be declared `const`; they cannot be reassigned after initial assignment. Resolves coherence II-6.
+- **docs/compiler.md** — § Const local variables: documents E012 for assignment to const locals; generalized E012 message to "const variable".
+- **docs/milestones.md** — Milestone 2: "const parameters" → "const parameters and locals" (E012).
+
+## 0.8.19 — 2026-03-04
+
+### Changed
+
+- **docs/specs.md** — § Native types: explicitly documents that byte literals are not supported; use `(byte) intExpr` to obtain byte values. Resolves coherence II-4.
+
 ## 0.8.18 — 2026-03-04
 
 ### Changed

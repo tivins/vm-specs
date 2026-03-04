@@ -201,7 +201,14 @@ the compiler must reject:
 A parameter declared `const` cannot be reassigned or mutated inside the method body. For object types, only
 `const` methods may be called on the parameter.
 
-**Error:** `E012 — Cannot modify const parameter '%s'`
+**Error:** `E012 — Cannot modify const variable '%s'`
+
+### Const local variables
+
+A local variable declared `const` (e.g. `const int x = 42;`) cannot be reassigned after its initial assignment.
+For object types, only `const` methods may be called on the variable.
+
+**Error:** `E012 — Cannot modify const variable '%s'` (same code for const parameters and const locals)
 
 ### For-each loop in const context
 
@@ -434,7 +441,7 @@ Non-nullable reference properties have no default and must be initialized — se
 | E009 | Operators | Operator not defined for types |
 | E010 | Const | Property modification in const method |
 | E011 | Const | Non-const method call in const method |
-| E012 | Const | Modification of const parameter |
+| E012 | Const | Modification of const parameter or variable |
 | E039 | Const | Loop variable implicitly const (for-each over read-only collection) |
 | E013 | Readonly | Property modification on readonly class |
 | E014 | Readonly | Modification of readonly property |

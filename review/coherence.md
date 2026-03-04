@@ -86,7 +86,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### II-4. Byte literal syntax not defined
 
-- [ ] The spec defines `byte` as a type but provides no syntax for byte literals. The only way to obtain a byte is through `(byte) intExpr`. If byte literals are not supported, this should be stated explicitly.
+- [x] The spec defines `byte` as a type but provides no syntax for byte literals. The only way to obtain a byte is through `(byte) intExpr`. If byte literals are not supported, this should be stated explicitly. *(fixed 0.8.19: specs.md § Native types — explicitly documents that byte literals are not supported; use `(byte) intExpr`)*
 
 ### II-5. Float literal format not specified
 
@@ -94,7 +94,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### II-6. `const` on local variables
 
-- [ ] The `const` keyword is used for method declarations and parameters. For-each loops use `const auto`. But can a local variable be declared `const`? E.g. `const int x = 42;`. The spec neither allows nor disallows this.
+- [x] The `const` keyword is used for method declarations and parameters. For-each loops use `const auto`. But can a local variable be declared `const`? E.g. `const int x = 42;`. The spec neither allows nor disallows this. *(fixed 0.8.20: specs.md § Const methods and parameters — local variables may be declared `const`; they cannot be reassigned after initial assignment)*
 
 ### II-7. Multiple interface implementation syntax
 

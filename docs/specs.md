@@ -7,7 +7,7 @@ safety with compile-time initialization guarantees for precise state representat
 
 The language emphasizes type safety through compile-time type checking while providing convenience features like
 automatic type deduction with the `auto` keyword. It offers comprehensive immutability guarantees through both `const` (
-for methods and parameters) and `readonly` (for classes and properties), enabling developers to write safer and more
+for methods, parameters, and local variables) and `readonly` (for classes and properties), enabling developers to write safer and more
 maintainable code.
 
 NL supports modern programming paradigms including classes with inheritance and interfaces, template-based generics,
@@ -206,6 +206,8 @@ my var // Error : Contains ' '
 * `string`, `int`, `float`, `bool` (`true`, `false`), `byte`, `null`
 * `void` - special type for methods that do not return a value
 * Arrays uses `[]`: `string[]`, `int[]`, `byte[]`, `customObject[]`
+
+NL does not provide byte literal syntax. To obtain a byte value, use an explicit cast: `(byte) intExpr`. The expression must evaluate to an integer; values outside 0–255 are treated as in [int → byte conversion](#type-conversions-and-casting) (low-order bits; overflow implementation-defined).
 
 A **character** is represented as a `string` of length 1 (e.g. via `system.String.charAt`). A dedicated `char` type may be added to the spec in a future version; see [Planned](#planned).
 
@@ -745,7 +747,8 @@ class MyClass
 #### Const methods and parameters
 
 The `const` keyword provides immutability guarantees: when applied to a method, it prevents the method from modifying
-the object's state; when applied to a parameter, it prevents the parameter from being modified within the method body.
+the object's state; when applied to a parameter, it prevents the parameter from being modified within the method body;
+when applied to a local variable, it prevents the variable from being reassigned after its initial assignment.
 This helps ensure data integrity and enables safe sharing of objects without unintended side effects.
 
 ```nl
@@ -766,6 +769,12 @@ class MyClass
     {
         arg1 = 2; // OK
         arg2 = 2; // Error: cannot modify a const value.
+    }
+
+    public void example()
+    {
+        const int x = 42;
+        x = 10;  // Error: cannot modify a const variable.
     }
 }
 ```
