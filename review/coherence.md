@@ -19,6 +19,7 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 | [V. Standard library issues](#v-standard-library-issues) | 8 (1 resolved) | stdlib.md problems (inconsistencies, missing API) |
 | [VI. Under-specified semantics](#vi-under-specified-semantics) | 9 | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
 | [VII. Documentation and editorial errors](#vii-documentation-and-editorial-errors) | 6 (6 resolved) | Typos, wrong numbers, stale cross-references |
+| [VIII. Security-related specification gaps](#viii-security-related-specification-gaps) | 10 | Missing security hardening, unsafe APIs, unspecified safety behavior — see [security-audit.md](security-audit.md) |
 
 ---
 
@@ -365,6 +366,52 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 ### VII-6. specs.md — no link reference for `[23]` (`ref`)
 
 - [x] Keywords table uses `[23]` for `ref` → `#parameter-passing-semantics`. The anchor link works but the numerical reference style is inconsistent with the labels used elsewhere. (Minor — formatting only.) *(accepted 0.8.3: all keyword links use numbered references consistently; this is the intended style)*
+
+---
+
+## VIII. Security-related specification gaps
+
+*See [review/security-audit.md](security-audit.md) for the full security audit (26 findings). The items below track specification changes needed to address the most impactful findings.*
+
+### VIII-1. `system.ps.Process.run(string)` — no command injection warning
+
+- [ ] **stdlib.md § system.ps.Process** — `Process.run(string command)` passes input to the platform shell. The spec does not warn about command injection or recommend the `run(string[] args)` overload as the safe alternative. *[SEC-01]*
+
+### VIII-2. File system APIs — no path traversal warning
+
+- [ ] **stdlib.md § system.io** — `File.open`, `File.readAllText`, `File.writeAllText`, `File.glob`, `Directory.create`, `Directory.remove`, `Process.setCwd` perform no path sanitization. The spec does not document that path validation is the caller's responsibility. *[SEC-02]*
+
+### VIII-3. No `tryParseInt` / `tryParseFloat` safe parsing methods
+
+- [ ] **stdlib.md § system.Int, system.Float** — `parseInt` and `parseFloat` throw `NumberFormatException` (a `RuntimeException`), meaning callers are not required to handle parse errors. No safe-by-default alternative (`tryParseInt(string) : int|null`) exists. *[SEC-05]*
+
+### VIII-4. Integer overflow behavior undocumented in specs.md
+
+- [ ] **specs.md § Native types** — vm.md specifies that `int` arithmetic wraps on overflow (two's complement), but specs.md does not mention overflow behavior. Developers may not be aware of wrapping semantics. The comparator example `(int a, int b) => a - b` (specs.md line 304) is vulnerable to overflow. *[SEC-10]*
+
+### VIII-5. Byte array I/O bounds checking unspecified
+
+- [ ] **stdlib.md § system.io.FileHandle, system.net.TcpStream, system.net.UdpSocket** — `read(byte[] buffer, int offset, int length)` and `write(byte[] data, int offset, int length)` do not specify behavior when `offset` or `length` are negative, or when `offset + length > buffer.length()`. In native implementations, this could cause buffer over-reads or over-writes. *[SEC-16]*
+
+### VIII-6. Network APIs — no TLS certificate validation requirement
+
+- [ ] **stdlib.md § system.net.Http** — `Http.get`/`Http.post` accept `https://` URLs but the spec does not require certificate validation. An implementation that skips validation would be vulnerable to MITM attacks. *[SEC-08]*
+
+### VIII-7. No cryptographically secure random number generator
+
+- [ ] **stdlib.md § system.Random, system.Uuid** — `system.Random` is a PRNG, unsuitable for security purposes. `system.Uuid.random()` does not specify UUID version or randomness source. No `system.SecureRandom` (CSPRNG) exists. *[SEC-09]*
+
+### VIII-8. Read/write after close behavior unspecified
+
+- [ ] **stdlib.md § system.io.FileHandle, system.net.TcpStream, system.net.UdpSocket** — `close()` is idempotent, but the behavior of `read()`, `write()`, `readLine()`, `flush()` after `close()` is not specified. Should throw `IOException`. *[SEC-11]*
+
+### VIII-9. `Regex.match` — full vs partial match unspecified
+
+- [ ] **stdlib.md § system.text.Regex** — `Regex.match(string pattern, string input)` returns `bool`, but it is not specified whether this is a **full match** (the entire input must match the pattern) or a **partial match** (the pattern must be found somewhere in the input). No `Regex.escape()` utility exists for safely using user input in patterns. *[SEC-23]*
+
+### VIII-10. Module format — no integrity verification
+
+- [ ] **vm.md § Module format** — The `.nlm` format has a 4-byte magic number but no hash, checksum, or digital signature. A modified module can be loaded without detection. *[SEC-03]*
 
 ---
 

@@ -37,7 +37,7 @@
 ```
 nlvm-specs/
 ├── docs/       # All specification documents
-├── review/     # Coherence tracker (coherence.md), architecture analyses (SOLID, DDD), archives
+├── review/     # Coherence tracker, security audit, architecture (SOLID, DDD), archives
 ├── tests/      # YAML acceptance tests (format in docs/tests.md)
 ├── CHANGELOG.md
 └── README.md

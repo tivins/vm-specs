@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.22 — 2026-03-04
+
+### Added
+
+- **review/security-audit.md** — Security audit: 26 findings across 5 severity levels (3 Critical, 7 High, 8 Medium, 5 Low, 3 Informational). Covers command injection (CWE-78), path traversal (CWE-22), unsigned bytecode (CWE-494), denial of service via resource exhaustion (CWE-400), integer overflow (CWE-190), race conditions (CWE-362), missing TLS validation (CWE-295), weak randomness (CWE-338), SSRF (CWE-918), and more. Each finding mapped to CWE identifiers and known CVE patterns.
+- **review/coherence.md** — § VIII: 10 security-related specification gaps tracking the most impactful findings from the security audit (VIII-1 through VIII-10).
+
 ## 0.8.21 — 2026-03-04
 
 ### Changed
