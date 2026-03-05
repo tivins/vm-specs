@@ -54,6 +54,7 @@ write concise code without sacrificing type safety or runtime guarantees.
     * [Basic enums](#basic-enums)
     * [Typed enums](#typed-enums-string-or-int)
     * [Enum methods](#enums-methods)
+    * [Custom methods and properties](#enum-custom-methods-and-properties)
 * [Control Structures](#control-structures)
     * [Conditionals](#conditionals)
     * [Loops](#loops)
@@ -1542,6 +1543,26 @@ if (invalid != null) { /* expected null */ }
 
 // Status.from("Invalid"); // throws IllegalArgumentException
 ```
+
+### Custom methods and properties
+
+Enums may declare **custom static methods**, **instance methods**, and **static properties** in addition to the built-in `from()`, `tryFrom()`, and `value`. Custom members follow the same syntax and visibility rules as class members.
+
+Example:
+
+```nl
+enum Status: int
+{
+    OK = 200,
+    NotFound = 404,
+    InternalServerError = 500,
+
+    public bool isSuccess() { return this.value >= 200 && this.value < 300; }
+    public static Status fromHttpCode(int code) { /* lookup by value */ }
+}
+```
+
+**Style recommendation:** Keep enums as lightweight value types. Prefer pure logic (e.g. `isSuccess()`, `toDisplayName()`) over methods that perform I/O, network calls, or other side effects. Complex business logic belongs in dedicated classes or services rather than on enum definitions.
 
 ## Control Structures
 

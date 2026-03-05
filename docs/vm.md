@@ -348,6 +348,7 @@ Enums are compiled to classes:
 - **Typed enums** (`enum E: int` or `enum E: string`): each case is a `static readonly` field of the backing
   type. The `.value` property reads this field. `from()` / `tryFrom()` are compiled as static methods with a
   lookup table or chain of comparisons.
+- **Custom methods and properties** (see [specs.md § Custom methods and properties](specs.md#enum-custom-methods-and-properties)): compiled like class methods and fields on the generated enum class.
 
 ---
 

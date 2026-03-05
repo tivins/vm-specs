@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.27 — 2026-03-05
+
+### Changed
+
+- **docs/specs.md** — § Custom methods and properties: enums may declare custom static methods, instance methods, and static properties beyond built-in `from()`, `tryFrom()`, and `value`. Style recommendation to keep enums lightweight. Resolves coherence II-10.
+- **docs/vm.md** — § Enum representation: added note that custom methods and properties are compiled like class members.
+- **review/coherence.md** — Marked II-10 as resolved.
+
 ## 0.8.26 — 2026-03-05
 
 ### Added
