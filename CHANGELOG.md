@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.37 — 2026-03-05
+
+### Added
+
+- **docs/specs.md** — § Keywords: added `instanceof`. § Other operators: `expr instanceof ClassName` — runtime type test returning `bool`; left operand must be a reference type, right operand must be a class or interface; `null` produces `false`. Compiles to `INSTANCEOF` opcode.
+- **docs/compiler.md** — § Instanceof expression: validation rules for left operand (reference type) and right operand (class or interface).
+- **tests/m5_0020_instanceof.yaml** — Run test for `instanceof` with class, interface, and null.
+
+### Updated references
+
+- **review/coherence.md** — II-1 marked resolved.
+
 ## 0.8.36 — 2026-03-05
 
 ### Changed

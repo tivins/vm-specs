@@ -167,7 +167,7 @@ class Application {
 | Control flow             | [`if`][1], [`else`][1], [`while`][2], [`for`][2], [`break`][2], [`continue`][2], [`switch`][3], [`case`][3], [`match`][3]             |
 | Types and literals       | [`auto`][4], [`const`][5], [`ref`][23], [`void`][6], `true`, `false`, [`null`][7], `return`                                      |
 | Reserved                 | `undefined`                                                                                                          |
-| Object-oriented          | [`class`][18], `interface`, [`namespace`][8], [`extends`][9], [`implements`][9], [`super`][21], [`Self`][10], [`type`][10], [`use`][22], [`as`][22] |
+| Object-oriented          | [`class`][18], `interface`, [`namespace`][8], [`extends`][9], [`implements`][9], [`super`][21], [`Self`][10], [`type`][10], [`use`][22], [`as`][22], [`instanceof`](#other-operators) |
 | Visibility and modifiers | [`private`][19], [`public`][19], [`protected`][19], [`static`][5], [`final`][24], [`abstract`][25], [`readonly`][11], [`nodiscard`][20]       |
 | Templates and generics   | [`template`][12], [`operator`][13]                                                                                   |
 | Exceptions               | [`try`][14], [`catch`][14], [`finally`][14], [`throw`][15], [`throws`][15]                                           |
@@ -1970,6 +1970,7 @@ The string representation of `int`, `float`, and `bool` is implementation-define
 - `.` (member access)
 - `new` (object instantiation)
 - **`(T) expr`** (cast) — explicit type conversion. See [Type conversions and casting](#type-conversions-and-casting) for allowed conversions, implicit vs explicit rules, and runtime behavior. The cast to string **`(string) expr`** converts a value to string using the same rules as [string concatenation](#string-concatenation): primitives use their built-in string representation; reference types that implement [Stringable](#stringable-interface) use `toString()`; otherwise it is a compile-time error.
+- **`expr instanceof ClassName`** — runtime type test. Evaluates to `true` if the left operand is an instance of the given class (or a subclass) or implements the given interface; `false` otherwise. The left operand must be a reference type (class, interface, array, `string`, or `T|null`); primitives (`int`, `float`, `bool`, `byte`) are rejected at compile-time. The right operand must be a class or interface type. `null` always produces `false`. Compiles to the `INSTANCEOF` opcode; see [vm.md § Object operations](vm.md#object-operations).
 
 ### Conditional operators
 

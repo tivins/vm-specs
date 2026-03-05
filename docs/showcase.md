@@ -5,7 +5,7 @@ to a file. The program is split across 6 source files following NL's one-class-p
 language's core principles in a natural way.
 
 > **Scope:** This showcase uses only features that are fully specified as of version 0.8.25. It deliberately avoids
-> under-specified areas (operator overloading details, `match` exhaustiveness, `instanceof` syntax). For the full
+> under-specified areas (operator overloading details, `match` exhaustiveness). For the full
 > language reference, see [specs.md](specs.md).
 
 ---

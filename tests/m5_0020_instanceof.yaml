@@ -1,0 +1,41 @@
+---
+title: "instanceof runtime type test"
+file_separator: "#NLFILE"
+expected_exit_code: 0
+expected_stdout: "true true true false true false"
+---
+
+#NLFILE test/instanceof/Animal.nl
+namespace test.instanceof;
+interface Animal {}
+
+#NLFILE test/instanceof/Dog.nl
+namespace test.instanceof;
+class Dog implements Animal {
+	public construct() {}
+}
+
+#NLFILE test/instanceof/Main.nl
+namespace test.instanceof;
+use test.instanceof.Animal;
+use test.instanceof.Dog;
+class Main {
+	public static int main(string[] args) {
+		Dog dog = new Dog();
+		Animal animal = dog;
+		system.Out.print((dog instanceof Dog) ? "true" : "false");
+		system.Out.print(" ");
+		system.Out.print((animal instanceof Dog) ? "true" : "false");
+		system.Out.print(" ");
+		system.Out.print((animal instanceof Animal) ? "true" : "false");
+		system.Out.print(" ");
+		animal = null;
+		system.Out.print((animal instanceof Dog) ? "true" : "false");
+		system.Out.print(" ");
+		animal = dog;
+		system.Out.print((animal instanceof Animal) ? "true" : "false");
+		system.Out.print(" ");
+		system.Out.print((null instanceof Dog) ? "true" : "false");
+		return 0;
+	}
+}

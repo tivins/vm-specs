@@ -14,12 +14,12 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 
 | Category | Open | Description |
 |----------|------|-------------|
-| [II. Language specification omissions](#ii-language-specification-omissions) | 6 | Features referenced or implied but never formally defined in specs.md |
+| [II. Language specification omissions](#ii-language-specification-omissions) | 5 | Features referenced or implied but never formally defined in specs.md |
 | [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 5 | Missing pieces in vm.md or compiler.md |
 | [VI. Under-specified semantics](#vi-under-specified-semantics) | 8 | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
 | [VIII. Security-related specification gaps](#viii-security-related-specification-gaps) | 9 | Missing security hardening, unsafe APIs, unspecified safety behavior — see [security-audit.md](security-audit.md) |
 
-**Total open: 28**
+**Total open: 27**
 
 ---
 
@@ -27,7 +27,7 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 
 ### II-1. No `instanceof` keyword or expression
 
-- [ ] **vm.md** defines an `INSTANCEOF` opcode (line 472). **milestones.md** (line 38) lists `instanceof` as an expression. But **specs.md** does not define an `instanceof` keyword, does not list it in the keywords table, and does not describe any expression syntax for runtime type testing. A compiler implementor cannot generate `INSTANCEOF` without knowing the source-level syntax. Suggested: add `instanceof` as a binary expression `expr instanceof ClassName` → `bool`.
+- [x] **vm.md** defines an `INSTANCEOF` opcode (line 472). **milestones.md** (line 38) lists `instanceof` as an expression. But **specs.md** does not define an `instanceof` keyword, does not list it in the keywords table, and does not describe any expression syntax for runtime type testing. A compiler implementor cannot generate `INSTANCEOF` without knowing the source-level syntax. Suggested: add `instanceof` as a binary expression `expr instanceof ClassName` → `bool`. *(fixed 0.8.37)*
 
 ### II-2. No complete operator precedence table
 

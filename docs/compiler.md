@@ -17,6 +17,7 @@ complements [specs.md](specs.md) (language semantics) and [stdlib.md](stdlib.md)
     * [Auto type deduction](#auto-type-deduction)
     * [Template instantiation](#template-instantiation)
     * [Cast validation](#cast-validation)
+    * [Instanceof expression](#instanceof-expression)
     * [String concatenation](#string-concatenation)
     * [Operator type compatibility](#operator-type-compatibility)
 * [Immutability enforcement](#immutability-enforcement)
@@ -175,6 +176,17 @@ Cast rules are defined in the language specification: [Type conversions and cast
 | `T|null` → `T` | Not allowed (reducing nullability by cast alone). |
 
 **Error:** `E007 — Cannot cast '%s' to '%s'`
+
+### Instanceof expression
+
+The `instanceof` operator (`expr instanceof ClassName`) performs a runtime type test. The compiler validates:
+
+- **Left operand:** Must be a reference type (class, interface, array, `string`, or `T|null`). Primitives (`int`, `float`, `bool`, `byte`) are rejected.
+- **Right operand:** Must be a class or interface type (not a primitive, not `void`).
+
+Invalid operand types produce a compile-time error.
+
+See [specs.md § Other operators](specs.md#other-operators) and [vm.md § Object operations](vm.md#object-operations).
 
 ### String concatenation
 
