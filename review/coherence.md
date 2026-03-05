@@ -121,7 +121,7 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 
 ### VIII-1. `system.ps.Process.run(string)` — no command injection warning
 
-- [ ] **stdlib.md § system.ps.Process** — `Process.run(string command)` passes input to the platform shell. The spec does not warn about command injection or recommend the `run(string[] args)` overload as the safe alternative. *[SEC-01]*
+- [x] **stdlib.md § system.ps.Process** — `Process.run(string command)` passes input to the platform shell. The spec does not warn about command injection or recommend the `run(string[] args)` overload as the safe alternative. *[SEC-01]* *(fixed 0.8.38)*
 
 ### VIII-2. File system APIs — no path traversal warning
 

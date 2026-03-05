@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.38 — 2026-03-06
+
+### Changed
+
+- **docs/stdlib.md** — § system.ps.Process: added security warning for `run(string command)` — never interpolate user-controlled input; prefer `run(string[] args)` to bypass shell interpretation. Added safe example in code block. Resolves coherence VIII-1.
+
+### Updated references
+
+- **review/coherence.md** — VIII-1 marked resolved.
+
 ## 0.8.37 — 2026-03-05
 
 ### Added

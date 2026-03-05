@@ -875,6 +875,8 @@ All methods are **static**.
 
 **ProcessResult** (result type): has `int exitCode`, `string stdout`, `string stderr`. See [Result types](#result-types) above.
 
+**Security (command injection):** `run(string command)` passes the string to the platform shell for interpretation. Never interpolate user-controlled input (e.g. from `system.In.readLine()`, `args`, or network data) into the command string — an attacker could inject arbitrary shell commands. Prefer `run(string[] args)`, which bypasses the shell and passes arguments directly to the executable.
+
 **Example**
 
 ```nl
@@ -886,6 +888,8 @@ auto one = system.ps.Process.list(1234);
 
 auto result = system.ps.Process.run("ls -la");
 system.Out.println(result.stdout);
+// Safe alternative when using user input: run(string[] args) bypasses the shell
+// auto result = system.ps.Process.run(["grep", pattern, "/etc/passwd"]);
 int myPid = system.ps.Process.pid();
 string cwd = system.ps.Process.getCwd();
 system.ps.Process.setCwd("/tmp");
