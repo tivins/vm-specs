@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.8.32 — 2026-03-05
+
+### Added
+
+- **docs/compiler.md** — § Import name resolution: E043 when an import would create a duplicate unqualified name (conflict with class in file, type in namespace, or another import). Resolves coherence IV-8.
+
+### Changed
+
+- **docs/specs.md** — § Import rules: explicit "no duplicate unqualified names" rule; conflict must be rejected; use `as` or fully qualified name to resolve. Cross-reference to compiler.md § Import name resolution.
+
+### Updated references
+
+- **review/coherence.md** — IV-8 added and marked resolved.
+- **docs/milestones.md** — Error count 42 → 43; added Import name resolution (E043) to Milestone 2 scope; error test range E001–E043.
+- **README.md** — Error code count 42 → 43.
+- **.cursor/skills/nl-specs/** — Error code range updated to E001–E043.
+
 ## 0.8.31 — 2026-03-05
 
 ### Added

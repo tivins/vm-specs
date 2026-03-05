@@ -15,7 +15,7 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 | [I. Cross-document inconsistencies](#i-cross-document-inconsistencies) | 8 (6 resolved) | Contradictions between documents |
 | [II. Language specification omissions](#ii-language-specification-omissions) | 17 (10 resolved) | Features referenced or implied but never formally defined in specs.md |
 | [III. Incorrect examples](#iii-incorrect-examples) | 11 (8 resolved) | Code that would not compile, produces wrong results, or contradicts the spec |
-| [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 7 (2 resolved) | Missing pieces in vm.md or compiler.md |
+| [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 8 (3 resolved) | Missing pieces in vm.md or compiler.md |
 | [V. Standard library issues](#v-standard-library-issues) | 8 (5 resolved) | stdlib.md problems (inconsistencies, missing API) |
 | [VI. Under-specified semantics](#vi-under-specified-semantics) | 9 (1 resolved) | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
 | [VII. Documentation and editorial errors](#vii-documentation-and-editorial-errors) | 6 (6 resolved) | Typos, wrong numbers, stale cross-references |
@@ -252,6 +252,10 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 ### IV-7. Exception `readonly` vs VM `stackTrace` assignment
 
 - [ ] The exception hierarchy declares `class readonly Exception` with field `public ExecutionPoint[] stackTrace`. In a readonly class, fields can only be assigned inside `construct`. But the stack trace is populated by the VM when the exception object is created — **after** the constructor runs. This requires the VM to bypass readonly enforcement for this specific field, which contradicts the spec. Either `stackTrace` should not be a regular field (use a native/internal mechanism), or the readonly rule needs an exception for VM-populated fields.
+
+### IV-8. Import name conflict — no error code or resolution rule
+
+- [x] When an import would create a duplicate unqualified name (e.g. `use system.Out;` in a file defining class `Out`, or in a namespace that already has `Out`), the spec said "aliases must be unique" but did not define the compiler behavior or error code. *(fixed 0.8.32: specs.md § Import rules — explicit "no duplicate unqualified names" rule; compiler.md § Import name resolution — E043 added)*
 
 ---
 

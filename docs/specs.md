@@ -139,6 +139,7 @@ class FileProcessor {
 - If a class is not imported, you must use its fully qualified name (e.g., `com.example.utils.FileHelper`)
 - The `as` keyword is optional; if omitted, the class is imported with its original name
 - Import aliases must be unique within the current namespace
+- **No duplicate unqualified names:** An import cannot introduce a name that already exists in the current scope (the class being defined in the file, another type in the same namespace, or another import). If a conflict would occur, the compiler must reject the program. Use the `as` keyword to assign a distinct alias, or use the fully qualified name without importing. See [compiler.md § Import name resolution](compiler.md#import-name-resolution).
 
 ```nl
 namespace com.example.app;

@@ -11,7 +11,7 @@ This document describes the recommended phases for building a complete NL toolch
 | # | Milestone | Deliverable | Key references |
 |---|-----------|-------------|----------------|
 | 1 | [Lexer & Parser](#milestone-1--lexer--parser) | AST for all NL syntax | specs.md |
-| 2 | [Semantic analysis](#milestone-2--semantic-analysis) | Error diagnostics (42 error codes, 1 warning) | compiler.md, specs.md |
+| 2 | [Semantic analysis](#milestone-2--semantic-analysis) | Error diagnostics (43 error codes, 1 warning) | compiler.md, specs.md |
 | 3 | [Bytecode emission](#milestone-3--bytecode-emission) | Valid `.nlm` modules | vm.md §§ Module format, Compilation strategies; compiler.md § [Compiler invocation (nlc)](compiler.md#compiler-invocation-nlc) |
 | 4 | [VM core](#milestone-4--vm-core) | Execute primitive programs | vm.md §§ Architecture, Value representation, Instruction set, Program startup, [VM invocation (nlvm)](vm.md#vm-invocation-nlvm) |
 | 5 | [Objects, arrays & dispatch](#milestone-5--objects-arrays--dispatch) | OOP programs run | vm.md §§ Object model, Method dispatch |
@@ -74,6 +74,7 @@ Implement all compile-time checks defined in compiler.md. This milestone require
 - **Default values and arrays** — [compiler.md § Default values](compiler.md#default-values): E031, E038.
 - **Static context** — [compiler.md § Static context restrictions](compiler.md#static-context-restrictions): E040.
 - **Duplicate definitions** — [compiler.md § Duplicate definitions](compiler.md#duplicate-definitions): E041, E042.
+- **Import name resolution** — [compiler.md § Import name resolution](compiler.md#import-name-resolution): E043.
 - **Warnings:** `nodiscard` — [compiler.md § Nodiscard](compiler.md#nodiscard): W001.
 
 ### Testable at this stage
@@ -237,7 +238,7 @@ Build the test runner that executes the YAML test suite, and validate the full t
 - **Compile-only tests** (`compile_only: true`): compile and verify success, no execution.
 - **Module-structure assertions:** parse the compiled module and verify `expected_class`, `expected_methods`, `expected_fields`, `expected_constant_pool_contains`.
 - **Test discovery:** scan `tests/` directory, run all `*.yaml` files, report pass/fail summary.
-- **Error tests (extension):** tests that verify the compiler correctly rejects invalid programs with specific error codes (E001–E042, W001). Requires extending the test format or adding a convention (e.g. `expected_error: "E003"` header key).
+- **Error tests (extension):** tests that verify the compiler correctly rejects invalid programs with specific error codes (E001–E043, W001). Requires extending the test format or adding a convention (e.g. `expected_error: "E003"` header key).
 
 ### Testable at this stage
 

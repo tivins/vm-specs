@@ -31,6 +31,7 @@ complements [specs.md](specs.md) (language semantics) and [stdlib.md](stdlib.md)
 * [Inheritance modifiers (abstract, final)](#inheritance-modifiers-abstract-final)
     * [Static context restrictions](#static-context-restrictions)
     * [Duplicate definitions](#duplicate-definitions)
+    * [Import name resolution](#import-name-resolution)
 * [Parameter validation](#parameter-validation)
     * [Ref parameter rules](#ref-parameter-rules)
     * [Named and optional parameter rules](#named-and-optional-parameter-rules)
@@ -350,6 +351,18 @@ Inside a `static` method, the compiler must reject:
 **Error:** `E041 — Duplicate method '%s' with identical signature in class '%s'`
 **Error:** `E042 — Duplicate class definition '%s'`
 
+### Import name resolution
+
+An import introduces a name (or alias) into the current scope. The compiler must reject any import that would create a duplicate unqualified name. A conflict occurs when:
+
+- The imported name (or alias) matches the class being defined in the file, or
+- The imported name (or alias) matches another type in the same namespace, or
+- The imported name (or alias) matches another import's name or alias.
+
+To resolve a conflict, the user must either use the `as` keyword to assign a distinct alias, or use the fully qualified name without importing. See [specs.md § Import rules](specs.md#imports).
+
+**Error:** `E043 — Import creates duplicate symbol '%s'`
+
 ---
 
 ## Parameter validation
@@ -515,6 +528,7 @@ Non-nullable reference properties have no default and must be initialized — se
 | E040 | Static context | Cannot use `this`, `Self`, or instance member in static method |
 | E041 | Duplicates | Duplicate method with identical signature |
 | E042 | Duplicates | Duplicate class definition |
+| E043 | Imports | Import creates duplicate symbol |
 | W001 | Warning | Nodiscard return value discarded |
 
 ---
