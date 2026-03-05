@@ -48,15 +48,6 @@ The `tests/` folder holds YAML acceptance tests. They help implementers validate
 
 ---
 
-## Docsify site
-
-A browsable docs front is provided via [Docsify](https://docsify.js.org/). Files: `index.html`, `_sidebar.md`, `.nojekyll`.
-
-- **Local preview:** `npx docsify-cli serve` then open http://localhost:3000
-- **GitHub Pages:** See [GitHub setup](#github-pages-setup) below.
-
----
-
 ## Language highlights
 
 - **Types:** `int`, `float`, `bool`, `byte`, `string`, fixed-size arrays `T[]`, union types `T|null`, `auto`, `typedef`
@@ -74,3 +65,14 @@ A browsable docs front is provided via [Docsify](https://docsify.js.org/). Files
 See [CHANGELOG.md](CHANGELOG.md) for version history and notable changes.
 
 For the broader **language evolution** history (vvm repository, Nov–Dec 2025), see [vvm/CHANGELOG.md](https://github.com/tivins/vvm/blob/main/CHANGELOG.md).
+
+---
+
+## Docsify site
+
+[https://tivins.github.io/nlvm-specs/](https://tivins.github.io/nlvm-specs/)
+
+A browsable docs front is provided via [Docsify](https://docsify.js.org/). Files: `index.html`, `_sidebar.md`, `.nojekyll`.
+
+- **Local preview:** `npx docsify-cli serve` then open http://localhost:3000
+
