@@ -16,7 +16,7 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 | [II. Language specification omissions](#ii-language-specification-omissions) | 17 (10 resolved) | Features referenced or implied but never formally defined in specs.md |
 | [III. Incorrect examples](#iii-incorrect-examples) | 11 (8 resolved) | Code that would not compile, produces wrong results, or contradicts the spec |
 | [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 7 (2 resolved) | Missing pieces in vm.md or compiler.md |
-| [V. Standard library issues](#v-standard-library-issues) | 8 (4 resolved) | stdlib.md problems (inconsistencies, missing API) |
+| [V. Standard library issues](#v-standard-library-issues) | 8 (5 resolved) | stdlib.md problems (inconsistencies, missing API) |
 | [VI. Under-specified semantics](#vi-under-specified-semantics) | 9 (1 resolved) | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
 | [VII. Documentation and editorial errors](#vii-documentation-and-editorial-errors) | 6 (6 resolved) | Typos, wrong numbers, stale cross-references |
 | [VIII. Security-related specification gaps](#viii-security-related-specification-gaps) | 10 (1 resolved) | Missing security hardening, unsafe APIs, unspecified safety behavior — see [security-audit.md](security-audit.md) |
@@ -267,7 +267,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### V-3. `system.List<T>` — no positional `remove` or `contains`
 
-- [ ] `system.List<T>` provides `pushBack`, `pushFront`, `popBack`, `popFront`, `get`, `set`, `add`, `size`, and for-each support. But there is no `remove(int index)` for arbitrary-position removal and no `contains(T value)` for searching. These are common operations on dynamic lists.
+- [x] `system.List<T>` provides `pushBack`, `pushFront`, `popBack`, `popFront`, `get`, `set`, `add`, `size`, and for-each support. But there was no `remove(int index)` for arbitrary-position removal and no `contains(T value)` for searching. *(fixed 0.8.31: stdlib.md § system.List — added remove(int index) and contains(T value))*
 
 ### V-4. `system.thread.Thread` — no `isAlive()` method
 

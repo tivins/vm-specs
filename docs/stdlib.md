@@ -139,7 +139,7 @@ Returned by **`system.Map.entries()`** and used during **for-each iteration** ov
 
 ## Arrays (built-in)
 
-Array types `T[]` are part of the language (see [specs.md](specs.md)#arrays). Creation: `new T[]{ ... }` (initializer list) or `new T[n]` (fixed size). Access by index: `arr[i]` (get/set); out-of-range access throws **IndexOutOfBoundsException**. Built-in methods: **`length()`**, **`slice(int start, int end)`**, **`map((T value) => U f)`**, **`filter((T value) => bool predicate)`**, **`forEach((T value) => void f)`**, **`sort((T a, T b) => int compare)`**, **`find((T value) => bool predicate)`**. Arrays are fixed-size; for dynamic add/remove use **system.List&lt;T&gt;** below.
+Array types `T[]` are part of the language (see [specs.md](specs.md)#arrays). Creation: `new T[]{ ... }` (initializer list) or `new T[n]` (fixed size). Access by index: `arr[i]` (get/set); out-of-range access throws **IndexOutOfBoundsException**. Built-in methods: **`length()`**, **`slice(int start, int end)`**, **`map((T value) => U f)`**, **`filter((T value) => bool predicate)`**, **`forEach((T value) => void f)`**, **`sort((T a, T b) => int compare)`**, **`find((T value) => bool predicate)`**. Arrays are fixed-size; for dynamic add/remove/search use **system.List&lt;T&gt;** below.
 
 ---
 
@@ -369,6 +369,8 @@ Dynamic sequence of elements of type `T`. Use when you need to add or remove ele
 | `popBack` | `T popBack()` | Removes and returns the last element. Throws if list is empty. |
 | `popFront` | `T popFront()` | Removes and returns the first element. Throws if list is empty. |
 | `add` | `void add(T value)` | Same as pushBack. |
+| `remove` | `T remove(int index)` | Removes and returns the element at `index`. Throws IndexOutOfBoundsException if out of range. |
+| `contains` | `bool contains(T value)` | Returns `true` if the list contains an element equal to `value`. Equality: primitives and `string` by value; reference types implementing [ValueEquatable](specs.md#valueequatable-interface) by `valueEquals`; otherwise by reference identity. |
 
 Lists support the [for-each loop](specs.md#loops): `for (const auto item : list) { ... }`.
 
@@ -382,6 +384,8 @@ list.pushBack(3);
 int n = list.size();       // 3
 int first = list.popFront(); // 1
 int last = list.popBack();  // 3
+list.remove(0);            // remove element at index 0
+bool has = list.contains(2); // true if 2 is in the list
 ```
 
 ---
@@ -913,7 +917,7 @@ Standard exceptions used by the system API. The hierarchy (Runtime vs Checked) i
 
 | Exception | Kind | Namespace | Thrown by |
 |-----------|------|-----------|-----------|
-| `IndexOutOfBoundsException` | Runtime | `system` | Array access via `[]` when index is out of range; `system.List.get`, `system.List.set` when index is out of range; `system.List.popBack`, `system.List.popFront` when the list is empty; **`string.charAt`, `string.substring`** when index or range is out of range |
+| `IndexOutOfBoundsException` | Runtime | `system` | Array access via `[]` when index is out of range; `system.List.get`, `system.List.set`, `system.List.remove` when index is out of range; `system.List.popBack`, `system.List.popFront` when the list is empty; **`string.charAt`, `string.substring`** when index or range is out of range |
 | `NumberFormatException` | Runtime | `system` | `system.Int.parse`, `system.Float.parse` when the string format is invalid |
 | `IllegalArgumentException` | Runtime | `system` | `enum.from()` when value does not match any case; `system.Bool.parse` when string is not `"true"` or `"false"`; `system.time.TimeZone.get()` when the timezone ID is unknown |
 | `StackOverflowException` | Runtime | `system` | Thrown by the VM when the call stack is exhausted (e.g. infinite recursion) |

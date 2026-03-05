@@ -1018,7 +1018,7 @@ methods are invoked via `INVOKE_INSTANCE` on the array reference and dispatched 
 the VM. Methods that accept callbacks (`map`, `filter`, `forEach`, `sort`, `find`) receive a closure object
 as an argument; the native implementation calls `INVOKE_CLOSURE` internally for each element.
 
-`system.List<T>` and `system.Map<K,V>` instance methods (`size`, `get`, `set`, `keys`, `values`, `entries`,
+`system.List<T>` and `system.Map<K,V>` instance methods (`size`, `get`, `set`, `remove`, `contains`, `keys`, `values`, `entries`,
 `forEach`, etc.) are dispatched via `INVOKE_INSTANCE` on the native object reference. `Map.forEach` receives
 a closure with two parameters (key, value); the native implementation calls `INVOKE_CLOSURE` for each entry.
 `Map.entries()` returns a native array of `MapEntry<K,V>` objects (see [stdlib.md § Result types](stdlib.md#result-types)).

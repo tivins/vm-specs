@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.31 — 2026-03-05
+
+### Added
+
+- **docs/stdlib.md** — § system.List: `remove(int index)` removes and returns the element at index; `contains(T value)` checks presence (value equality for primitives/string, ValueEquatable for refs, else reference identity). Resolves coherence V-3.
+- **docs/vm.md** — § Native template classes: added `remove`, `contains` to List instance methods list.
+
 ## 0.8.30 — 2026-03-05
 
 ### Changed
