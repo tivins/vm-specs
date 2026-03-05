@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.8.29 — 2026-03-05
+
+### Changed
+
+- **docs/stdlib.md** — Renamed `parseInt`, `parseFloat`, `parseBool` to `parse` for unified API across `system.Int`, `system.Float`, and `system.Bool`.
+- **docs/specs.md** — § Planned: added **Parsable interface** — template interface with static abstract `parse(string)` for generic parsing; requires static abstract interface members support.
+
+### Updated references
+
+- **docs/specs.md**, **docs/showcase.md**, **docs/compiler.md**, **review/coherence.md**, **review/security-audit.md** — All parse method references updated.
+
+## 0.8.28 — 2026-03-05
+
+### Added
+
+- **docs/stdlib.md** — § system.Bool: `parse(string s) throws IllegalArgumentException` for converting `"true"` / `"false"` to `bool`. Resolves coherence V-1. *(Renamed to `parse` in 0.8.29.)*
+
 ## 0.8.27 — 2026-03-05
 
 ### Changed

@@ -267,7 +267,7 @@ Runtime exceptions (`RuntimeException` and subclasses) are exempt: they do not r
 can propagate freely.
 
 **Documentation-only `throws`:** A method **may** list runtime exception types in its `throws` clause for documentation
-purposes (e.g. `static int parseInt(string s) throws NumberFormatException`). The compiler **does not enforce** such
+purposes (e.g. `static int parse(string s) throws NumberFormatException`). The compiler **does not enforce** such
 declarations: callers are not required to catch or re-declare them, and the compiler does not emit E015 for runtime
 exceptions regardless of whether they appear in a `throws` clause. This allows API authors to signal common failure
 modes without imposing try/catch on callers.

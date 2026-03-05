@@ -2161,7 +2161,7 @@ class readonly InvalidCastException extends RuntimeException {
 
 // Runtime exceptions used by the standard library (parsing, invalid arguments)
 class readonly NumberFormatException extends RuntimeException {
-    // Invalid numeric string format (e.g. system.Int.parseInt, system.Float.parseFloat)
+    // Invalid numeric string format (e.g. system.Int.parse, system.Float.parse)
 }
 class readonly IllegalArgumentException extends RuntimeException {
     // Invalid argument (e.g. enum.from with unknown value, system.time.TimeZone.get with unknown ID)
@@ -2485,8 +2485,8 @@ class Calculator {
         }
         
         string operation = args[1];
-        int a = system.Int.parseInt(args[2]);
-        int b = system.Int.parseInt(args[3]);
+        int a = system.Int.parse(args[2]);
+        int b = system.Int.parse(args[3]);
         
         int result = 0;
         if (operation == "add") {
@@ -2513,6 +2513,8 @@ The following features may be added to the spec in future versions:
 - **`char` type** — A dedicated scalar type for a single character (e.g. Unicode codepoint). Currently, a character is represented as a `string` of length 1.
 
 - **RAII / try-with-resources** — No mechanism for automatic resource cleanup at scope exit (like Java's `try-with-resources`, C#'s `using`, or C++ RAII) is specified for now. The only cleanup mechanism is the destructor, whose timing is implementation-defined. A dedicated construct may be considered in a future version.
+
+- **Parsable interface** — A template interface `Parsable<T>` with a static abstract method `static T parse(string s)` would unify the parsing contract of `system.Int`, `system.Float`, and `system.Bool`. This requires support for static abstract interface members (similar to C# 11), enabling generic code to call `T.parse(s)` when `T` is constrained by `Parsable<T>`.
 
 
 [1]: #conditionals

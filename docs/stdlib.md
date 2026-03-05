@@ -216,13 +216,13 @@ Static parsing and conversion for integer values. All methods are **static**.
 
 | Method | Signature | Description |
 |--------|------------|-------------|
-| `parseInt` | `static int parseInt(string s) throws NumberFormatException` | Parses `s` as a decimal integer. Throws if format is invalid. |
+| `parse` | `static int parse(string s) throws NumberFormatException` | Parses `s` as a decimal integer. Throws if format is invalid. |
 | `toString` | `static string toString(int n)` | Returns the string representation of `n`. Same representation as used for string concatenation and `system.Out.print(n)`. |
 
 **Example**
 
 ```nl
-int n = system.Int.parseInt("42");
+int n = system.Int.parse("42");
 string s = system.Int.toString(42);  // "42"
 ```
 
@@ -234,13 +234,13 @@ Static parsing and conversion for floating-point values. All methods are **stati
 
 | Method | Signature | Description |
 |--------|------------|-------------|
-| `parseFloat` | `static float parseFloat(string s) throws NumberFormatException` | Parses `s` as a float. Throws if format is invalid. |
+| `parse` | `static float parse(string s) throws NumberFormatException` | Parses `s` as a float. Throws if format is invalid. |
 | `toString` | `static string toString(float x)` | Returns the string representation of `x`. Same representation as used for string concatenation and `system.Out.print(x)`. |
 
 **Example**
 
 ```nl
-float x = system.Float.parseFloat("3.14");
+float x = system.Float.parse("3.14");
 string s = system.Float.toString(3.14);  // e.g. "3.14"
 ```
 
@@ -248,15 +248,17 @@ string s = system.Float.toString(3.14);  // e.g. "3.14"
 
 ## system.Bool
 
-Static conversion for boolean values. All methods are **static**.
+Static parsing and conversion for boolean values. All methods are **static**.
 
 | Method | Signature | Description |
 |--------|------------|-------------|
+| `parse` | `static bool parse(string s) throws IllegalArgumentException` | Parses `s` as a boolean. Accepts exactly `"true"` or `"false"` (case-sensitive). Throws if the string does not match. |
 | `toString` | `static string toString(bool b)` | Returns the string representation of `b` (e.g. `"true"` or `"false"`). Same representation as used for string concatenation and `system.Out.print(b)`. |
 
 **Example**
 
 ```nl
+bool b = system.Bool.parse("true");
 string s = system.Bool.toString(true);  // "true"
 ```
 
@@ -908,8 +910,8 @@ Standard exceptions used by the system API. The hierarchy (Runtime vs Checked) i
 | Exception | Kind | Namespace | Thrown by |
 |-----------|------|-----------|-----------|
 | `IndexOutOfBoundsException` | Runtime | `system` | Array access via `[]` when index is out of range; `system.List.get`, `system.List.set` when index is out of range; `system.List.popBack`, `system.List.popFront` when the list is empty; **`string.charAt`, `string.substring`** when index or range is out of range |
-| `NumberFormatException` | Runtime | `system` | `system.Int.parseInt`, `system.Float.parseFloat` when the string format is invalid |
-| `IllegalArgumentException` | Runtime | `system` | `enum.from()` when value does not match any case; `system.time.TimeZone.get()` when the timezone ID is unknown |
+| `NumberFormatException` | Runtime | `system` | `system.Int.parse`, `system.Float.parse` when the string format is invalid |
+| `IllegalArgumentException` | Runtime | `system` | `enum.from()` when value does not match any case; `system.Bool.parse` when string is not `"true"` or `"false"`; `system.time.TimeZone.get()` when the timezone ID is unknown |
 | `StackOverflowException` | Runtime | `system` | Thrown by the VM when the call stack is exhausted (e.g. infinite recursion) |
 | `FileNotFoundException` | Checked | `system.io` | `system.io.File.open`, `system.io.File.readAllText` when the path does not exist or is not a file |
 | `IOException` | Checked | `system.io` | `system.io.File`, `system.io.Directory`, `system.io.Path`, `system.io.Grep`, and other I/O failures; **read/write/flush on closed FileHandle** |

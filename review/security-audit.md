@@ -124,11 +124,11 @@ A malicious actor who can place a modified `.nlm` file in the module path can ex
 
 **Location:** stdlib.md § system.Int, system.Float; compiler.md § Checked exception propagation
 
-**Description:** `parseInt` and `parseFloat` throw `NumberFormatException`, a `RuntimeException`. Since runtime exceptions do not require `throws` declarations or `try/catch`, programs that parse untrusted input have no compile-time safety net:
+**Description:** `parse` (on `system.Int`, `system.Float`) throws `NumberFormatException`, a `RuntimeException`. Since runtime exceptions do not require `throws` declarations or `try/catch`, programs that parse untrusted input have no compile-time safety net:
 
 ```nl
 string input = args[1];
-int n = system.Int.parseInt(input);  // no try/catch required
+int n = system.Int.parse(input);  // no try/catch required
 // if input = "abc" → unhandled NumberFormatException → process crash
 ```
 
@@ -136,7 +136,7 @@ This is a denial-of-service vector: any NL program that parses external input (C
 
 **Recommendation:**
 1. Add `tryParseInt(string s) : int|null` and `tryParseFloat(string s) : float|null` methods that return `null` on invalid input (safe-by-default API).
-2. Document that `parseInt`/`parseFloat` will crash on invalid input if not wrapped in `try/catch`.
+2. Document that `parse` will crash on invalid input if not wrapped in `try/catch`.
 3. Fix the entry point example in specs.md to demonstrate proper error handling.
 
 ---
@@ -452,7 +452,7 @@ If `match("user_input", data)` is partial-match, user-controlled patterns may ma
 ### SEC-26. Spec Examples Demonstrate Insecure Patterns
 
 **Description:** Several spec examples demonstrate patterns that would be insecure in production:
-- specs.md § Entry point (line 2405): parses `args[2]`, `args[3]` with `parseInt` — no error handling.
+- specs.md § Entry point (line 2405): parses `args[2]`, `args[3]` with `parse` — no error handling.
 - stdlib.md § TcpListener example: accepts connections in a tight loop with no rate limiting, no client authentication.
 - stdlib.md § File.open example: opens a file without checking permissions or validating the path.
 

@@ -16,7 +16,7 @@ Audit performed on **2026-03-03**, against spec version **0.8.1**.
 | [II. Language specification omissions](#ii-language-specification-omissions) | 17 (10 resolved) | Features referenced or implied but never formally defined in specs.md |
 | [III. Incorrect examples](#iii-incorrect-examples) | 11 (8 resolved) | Code that would not compile, produces wrong results, or contradicts the spec |
 | [IV. VM and compiler specification gaps](#iv-vm-and-compiler-specification-gaps) | 7 (2 resolved) | Missing pieces in vm.md or compiler.md |
-| [V. Standard library issues](#v-standard-library-issues) | 8 (2 resolved) | stdlib.md problems (inconsistencies, missing API) |
+| [V. Standard library issues](#v-standard-library-issues) | 8 (3 resolved) | stdlib.md problems (inconsistencies, missing API) |
 | [VI. Under-specified semantics](#vi-under-specified-semantics) | 9 (1 resolved) | Defined but incomplete — a compiler/VM implementor cannot proceed without guessing |
 | [VII. Documentation and editorial errors](#vii-documentation-and-editorial-errors) | 6 (6 resolved) | Typos, wrong numbers, stale cross-references |
 | [VIII. Security-related specification gaps](#viii-security-related-specification-gaps) | 10 (1 resolved) | Missing security hardening, unsafe APIs, unspecified safety behavior — see [security-audit.md](security-audit.md) |
@@ -53,7 +53,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### I-5. `throws` declared for runtime exceptions in stdlib
 
-- [x] **stdlib.md** — `system.Int.parseInt` and `system.Float.parseFloat` are declared `throws NumberFormatException`. But `NumberFormatException extends RuntimeException`, and the spec states (compiler.md § Checked exception propagation): *"Runtime exceptions (`RuntimeException` and subclasses) are exempt: they do not require `throws` declarations."* *(fixed 0.8.24: option (b) — compiler.md § Checked exception propagation now states that `throws` may list runtime exceptions for documentation purposes; the compiler does not enforce them)*
+- [x] **stdlib.md** — `system.Int.parse` and `system.Float.parse` are declared `throws NumberFormatException`. But `NumberFormatException extends RuntimeException`, and the spec states (compiler.md § Checked exception propagation): *"Runtime exceptions (`RuntimeException` and subclasses) are exempt: they do not require `throws` declarations."* *(fixed 0.8.24: option (b) — compiler.md § Checked exception propagation now states that `throws` may list runtime exceptions for documentation purposes; the compiler does not enforce them)*
 
 ### I-6. `IllegalArgumentException` namespace attribution
 
@@ -257,9 +257,9 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ## V. Standard library issues
 
-### V-1. `system.Bool` — no `parseBool` method
+### V-1. `system.Bool` — no `parse` method
 
-- [ ] `system.Int` has `parseInt`, `system.Float` has `parseFloat`, but `system.Bool` has only `toString`. There is no `parseBool(string s)` for converting `"true"` / `"false"` to `bool`. This is an API asymmetry.
+- [x] `system.Int` has `parse`, `system.Float` has `parse`, but `system.Bool` had only `toString`. There was no `parse(string s)` for converting `"true"` / `"false"` to `bool`. This was an API asymmetry. *(fixed 0.8.28: stdlib.md § system.Bool — added parse; 0.8.29: renamed parseInt/parseFloat/parseBool to parse across Int, Float, Bool)*
 
 ### V-2. `system.String` — `trim` and `split` are static but peers are instance methods
 
@@ -373,7 +373,7 @@ E030 (reserved keywords), E031 (arrays), E032–E036 (abstract/final), E037 (tem
 
 ### VIII-3. No `tryParseInt` / `tryParseFloat` safe parsing methods
 
-- [ ] **stdlib.md § system.Int, system.Float** — `parseInt` and `parseFloat` throw `NumberFormatException` (a `RuntimeException`), meaning callers are not required to handle parse errors. No safe-by-default alternative (`tryParseInt(string) : int|null`) exists. *[SEC-05]*
+- [ ] **stdlib.md § system.Int, system.Float** — `parse` throws `NumberFormatException` (a `RuntimeException`), meaning callers are not required to handle parse errors. No safe-by-default alternative (`tryParse(string) : int|null`) exists. *[SEC-05]*
 
 ### VIII-4. Integer overflow behavior undocumented in specs.md
 

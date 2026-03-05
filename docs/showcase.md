@@ -199,7 +199,7 @@ class FileRepository implements Repository<Task> {
 
         int id;
         try {
-            id = system.Int.parseInt(parts[0]);
+            id = system.Int.parse(parts[0]);
         } catch (NumberFormatException ex) {
             return null;
         }
@@ -441,7 +441,7 @@ class Main {
 
         int id;
         try {
-            id = system.Int.parseInt(rawId);
+            id = system.Int.parse(rawId);
         } catch (NumberFormatException ex) {
             system.Out.println("Invalid ID: " + rawId);
             return;
@@ -461,7 +461,7 @@ class Main {
 - `input ?? "quit"` — if `system.In.readLine()` returns `null` (EOF), the program gracefully defaults to quitting.
 - `switch (command)` with `break` — fall-through semantics require explicit `break` ([specs.md § Switch/Match](specs.md#switchmatch)).
 - `try { ... } catch (IOException ex) { ... }` — checked exceptions from file I/O must be handled.
-- `try { id = system.Int.parseInt(rawId); } catch (NumberFormatException ex) { ... }` — runtime exceptions do not *require* handling, but *can* be caught for robustness ([specs.md § Exceptions](specs.md#exceptions)).
+- `try { id = system.Int.parse(rawId); } catch (NumberFormatException ex) { ... }` — runtime exceptions do not *require* handling, but *can* be caught for robustness ([specs.md § Exceptions](specs.md#exceptions)).
 - `const TaskService service` in `handleList` — guarantees the method only calls `const` methods on the service.
 - `pending.forEach((Task t) => { ... })` — closure passed to the array's built-in `forEach` method.
 
