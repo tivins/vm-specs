@@ -224,6 +224,10 @@ the compiler must reject:
 **Error:** `E010 — Cannot modify property '%s' in a const method`
 **Error:** `E011 — Cannot call non-const method '%s' in a const method`
 
+When a class implements an interface, a method that implements an interface method declared as `const` must itself be declared `const`. For example, [Stringable](specs.md#stringable-interface) declares `string toString() const`; any implementing class must provide `string toString() const` (not a non-const `toString()`).
+
+**Error:** `E044 — Method '%s' implementing interface '%s' must be declared const`
+
 ### Const parameters
 
 A parameter declared `const` cannot be reassigned or mutated inside the method body. For object types, only
@@ -541,6 +545,7 @@ Non-nullable reference properties have no default and must be initialized — se
 | E041 | Duplicates | Duplicate method with identical signature |
 | E042 | Duplicates | Duplicate class definition |
 | E043 | Imports | Import creates duplicate symbol |
+| E044 | Const | Method implementing interface must be const |
 | W001 | Warning | Nodiscard return value discarded |
 
 ---

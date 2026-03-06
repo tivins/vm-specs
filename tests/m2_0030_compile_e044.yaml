@@ -1,0 +1,13 @@
+---
+title: "Compile E044 — Stringable.toString() must be const"
+file_separator: "#NLFILE"
+expected_compile_error: "E044"
+---
+
+#NLFILE compile/e044/Main.nl
+namespace compile.e044;
+class BadStringable implements Stringable {
+	public string toString() {
+		return "bad";
+	}
+}

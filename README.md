@@ -13,15 +13,20 @@
 
 ---
 
-## Documentation
+## Specs
 
 | Document | Purpose |
 |----------|---------|
 | [specs.md](docs/specs.md) | Language syntax and semantics — *what* the language allows |
-| [compiler.md](docs/compiler.md) | Semantic analyses, 43 error codes, 1 warning — *what* the compiler must verify |
+| [compiler.md](docs/compiler.md) | Semantic analyses, 44 error codes, 1 warning — *what* the compiler must verify |
 | [stdlib.md](docs/stdlib.md) | Standard library API (`system`, `system.io`, etc.) — contract between user code and runtime |
 | [vm.md](docs/vm.md) | Bytecode format, instruction set, execution model — *how* compiled code runs |
 | [tests.md](docs/tests.md) | Test file format (YAML, `#NLFILE` blocks) for `tests/` |
+
+## Docs
+
+| Document | Purpose |
+|----------|---------|
 | [milestones.md](docs/milestones.md) | Implementation roadmap — 9 phases from lexer to optimizations |
 | [optimizations.md](docs/optimizations.md) | Optimization contract — what implementations *may* optimize |
 | [showcase.md](docs/showcase.md) | Complete example program — NL principles in action |

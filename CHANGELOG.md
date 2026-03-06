@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.8.40 — 2026-03-06
+
+### Changed
+
+- **docs/specs.md** — § Stringable interface: `toString()` is now `toString() const` to enforce read-only semantics. Explicit note that the interface does not declare `throws`; implementations may throw runtime exceptions if needed. All examples updated (Person, Bar, Point).
+- **docs/stdlib.md** — § Core interfaces: Stringable API updated to `string toString() const`; added note on no `throws`.
+- **docs/compiler.md** — § Const methods: when implementing an interface method declared as `const`, the implementing method must be `const`. New E044 for non-const implementation of const interface method. Error count 43 → 44.
+
+### Updated references
+
+- **docs/milestones.md** — Error count 43 → 44; error test range E001–E044.
+- **README.md** — Error code count 43 → 44.
+- **.cursor/skills/nl-specs/** — Error code range E001–E044.
+- **docs/showcase.md** — Task.toString() updated to `toString() const`.
+- **docs/milestones.md** — § Milestone 2: added E044 to Immutability enforcement scope.
+- **tests/m2_0030_compile_e044.yaml** — Compile-error test for E044 (non-const toString() implementing Stringable).
+
 ## 0.8.39 — 2026-03-06
 
 ### Added

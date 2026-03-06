@@ -97,7 +97,7 @@ class readonly Task implements Stringable {
         this.done = done;
     }
 
-    public string toString() {
+    public string toString() const {
         string status = this.done ? "[x]" : "[ ]";
         string desc = this.description ?? "";
         string base = status + " #" + this.id + " " + this.title + " (" + this.priority.value + ")";

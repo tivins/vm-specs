@@ -1230,7 +1230,7 @@ class Formatter {
 
 class Person implements Stringable {
     public string name;
-    public string toString() { return this.name; }
+    public string toString() const { return this.name; }
 }
 
 Formatter<Person> f = new Formatter<Person>();  // OK: Person implements Stringable
@@ -1301,15 +1301,15 @@ Both `extends` and `implements` are optional. When both are present, `extends` m
 
 ```nl
 class Foo {
-    protected void doSomethingProtected() {
+    protected void doSomethingProtected() const {
     }
 }
 interface Stringable {
-    public string toString();
+    public string toString() const;
 }
 class Bar extends Foo implements Stringable 
 {
-    public string toString()
+    public string toString() const
     {
         this.doSomethingProtected();
         return "Bar";
@@ -1329,7 +1329,7 @@ class Point implements Stringable, Cloneable, ValueEquatable {
         this.y = y;
     }
 
-    public string toString() { return "(" + this.x + ", " + this.y + ")"; }
+    public string toString() const { return "(" + this.x + ", " + this.y + ")"; }
     public Self clone() { return new Self(this.x, this.y); }
     public bool valueEquals(const Self|null other) {
         if (other == null) return false;
@@ -1341,13 +1341,13 @@ class Point implements Stringable, Cloneable, ValueEquatable {
 
 #### Stringable interface
 
-The **Stringable** interface is the standard contract for converting reference types to string. A class that implements Stringable must provide a method `string toString()`.
+The **Stringable** interface is the standard contract for converting reference types to string. A class that implements Stringable must provide a method `string toString() const`. The `const` modifier enforces read-only semantics: the method must not modify the object's state. The interface does **not** declare `throws`; implementations that need to signal failure may throw runtime exceptions (e.g. `IllegalStateException`), which do not require declaration.
 
 When a value is converted to string (in [string concatenation](#string-concatenation) or via the [cast to string](#other-operators) `(string) expr`), the runtime uses this interface for reference types: if the static type of the value implements Stringable, the result is `expr.toString()`. Primitives (`int`, `float`, `bool`) use built-in string representation and do not implement interfaces.
 
 ```nl
 interface Stringable {
-    public string toString();
+    public string toString() const;
 }
 ```
 

@@ -150,7 +150,7 @@ The following interfaces are part of the language contract and live in the `syst
 
 | Interface | Defined in | Description |
 |-----------|-----------|-------------|
-| **Stringable** | [specs.md § Stringable interface](specs.md#stringable-interface) | `string toString()` — contract for converting reference types to string (used by string concatenation, `(string)` cast, `system.Out.print`). |
+| **Stringable** | [specs.md § Stringable interface](specs.md#stringable-interface) | `string toString() const` — contract for converting reference types to string (used by string concatenation, `(string)` cast, `system.Out.print`). Does not declare `throws`; implementations may throw runtime exceptions if needed. |
 | **Cloneable** | [specs.md § Cloneable interface](specs.md#cloneable-interface) | `Self clone()` — contract for object copying (shallow by default). |
 | **ValueEquatable** | [specs.md § ValueEquatable interface](specs.md#valueequatable-interface) | `bool valueEquals(const Self|null other)` + `int valueHash()` — contract for structural equality (used by `system.Map` for key lookup). |
 
